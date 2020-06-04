@@ -6,21 +6,26 @@ import { NavPlayerModal } from '../screen/PlayerModal';
 import arrowDown from '../img/ic_keyboard_arrow_down_white.png';
 import queueMusic from '../img/ic_queue_music_white.png';
 
-const Header = ({ text }) => {
+const Header = ({ text, noArrow, backgroundColor }) => {
   return (
-    <View style={styles.container}>
-      <NavPlayerModal.Consumer>
-        {(navigation) => (
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('PlaylistlTab');
-            }}>
-            <Image style={styles.img} source={arrowDown} />
-          </TouchableOpacity>
+    <View style={[styles.container, { backgroundColor }]}>
+      <View style={styles.textAndArrowDown}>
+        {!noArrow && (
+          <NavPlayerModal.Consumer>
+            {(navigation) => (
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('PlaylistlTab');
+                }}
+                style={styles.img}>
+                <Image source={arrowDown} />
+              </TouchableOpacity>
+            )}
+          </NavPlayerModal.Consumer>
         )}
-      </NavPlayerModal.Consumer>
-      <Text style={styles.text}>{text}</Text>
-      <TouchableOpacity>
+        <Text style={noArrow ? styles.textNoArrow : styles.text}>{text}</Text>
+      </View>
+      <TouchableOpacity style={noArrow ? styles.queueNoArrow : null}>
         <Image source={queueMusic} />
       </TouchableOpacity>
     </View>
@@ -32,16 +37,34 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#283593',
     height: 64,
-    paddingLeft: 16,
     paddingRight: 16,
   },
+  textAndArrowDown: {
+    flexDirection: 'row',
+  },
   img: {
-    padding: 8,
+    padding: 16,
+  },
+  imgNoArrow: {
+    display: 'none',
+  },
+  queueNoArrow: {
+    display: 'none',
   },
   text: {
     color: 'white',
+    marginLeft: 0,
+    alignSelf: 'center',
+    fontSize: 16,
+  },
+  textNoArrow: {
+    color: 'white',
+    marginLeft: 16,
+    alignSelf: 'center',
+    fontSize: 16,
+    fontWeight: 'bold',
+    letterSpacing: 0.2,
   },
 });
 

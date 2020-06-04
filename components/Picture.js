@@ -1,9 +1,7 @@
 import React from 'react';
 import { Animated, Easing, StyleSheet, View } from 'react-native';
 
-import img from '../img/thumb_dungloanhdoima.jpg';
-
-const Picture = ({ paused }) => {
+const Picture = ({ paused, img }) => {
   let spinValue = new Animated.Value(0);
 
   const animated = Animated.loop(
@@ -26,7 +24,7 @@ const Picture = ({ paused }) => {
     <View style={styles.container}>
       <Animated.Image
         style={[styles.img, { transform: [{ rotate: spin }] }]}
-        source={img}
+        source={{ uri: img }}
       />
     </View>
   );

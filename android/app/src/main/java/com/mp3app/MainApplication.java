@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.BV.LinearGradient.LinearGradientPackage;
 import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.brentvatne.react.ReactVideoPackage;
@@ -38,6 +39,7 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.asList(
                     new MainReactPackage(),
+            new LinearGradientPackage(),
             new SafeAreaContextPackage(),
             new RNGestureHandlerPackage(),
                     new ReactVideoPackage()

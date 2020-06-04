@@ -1,10 +1,11 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, Image } from 'react-native';
 
 const Item = ({ item, navigation, tracks }) => {
   const pad = (number) => {
     return number < 10 ? `0${number}` : `${number}`;
   };
+
   return (
     <TouchableOpacity
       onPress={() =>
@@ -17,7 +18,11 @@ const Item = ({ item, navigation, tracks }) => {
       <View>
         <Text style={[styles.text, styles.number]}>{pad(item.id + 1)}</Text>
       </View>
-      <Text style={[styles.text, styles.title]}>{item.title}</Text>
+      <Image source={{ uri: item.picture }} style={styles.img} />
+      <View style={styles.content}>
+        <Text style={[styles.text, styles.title]}>{item.title}</Text>
+        <Text style={[styles.text, styles.singer]}>{item.singer}</Text>
+      </View>
     </TouchableOpacity>
   );
 };
@@ -29,6 +34,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingRight: 16,
     paddingLeft: 16,
+    marginBottom: 8,
   },
   text: {
     color: 'white',
@@ -39,7 +45,19 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   title: {
+    fontWeight: 'bold',
+  },
+  singer: {
+    color: '#a0a0a0',
+  },
+  img: {
+    height: 64,
+    width: 64,
+    borderRadius: 4,
+  },
+  content: {
     alignSelf: 'flex-start',
+    marginLeft: 8,
   },
 });
 

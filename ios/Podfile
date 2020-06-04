@@ -83,6 +83,8 @@ target 'Mp3App' do
 
   pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
 
+  pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
+
   target 'Mp3AppTests' do
     inherit! :complete
     # Pods for testing

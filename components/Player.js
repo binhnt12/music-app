@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Video from 'react-native-video';
+import LinearGradient from 'react-native-linear-gradient';
 
 import Header from '../components/Header';
 import Picture from './Picture';
@@ -79,42 +80,46 @@ const Player = ({ tracks, trackId }) => {
 
   return (
     <View style={styles.container}>
-      <Header text={track.title} />
-      <View style={styles.content}>
-        <View style={styles.picture}>
-          <Picture paused={state.paused} />
+      <Header text={track.title} backgroundColor="#000051" />
+      <LinearGradient
+        colors={['#E1E2E1', '#283593', '#001064']}
+        style={styles.background}>
+        <View style={styles.content}>
+          <View style={styles.picture}>
+            <Picture paused={state.paused} img={track.picture} />
+          </View>
+          <View style={styles.control}>
+            <SeekBar
+              onSeek={seek}
+              trackLength={state.totalLength}
+              onSlidingStart={() => setState({ ...state, paused: true })}
+              currentPosition={state.currentPosition}
+            />
+            <Control
+              onPressPlay={() => setState({ ...state, paused: false })}
+              onPressPause={() => setState({ ...state, paused: true })}
+              onForward={handleOnForward}
+              onBack={handleOnBack}
+              paused={state.paused}
+              forwardDisabled={state.isForwardDisabled}
+            />
+            <Video
+              rate={1.0}
+              volume={1.0}
+              source={{
+                uri: track.audioUrl,
+              }} // Can be a URL or a local file.
+              ref={audioElement}
+              paused={state.paused}
+              seek={state.dragTime || null}
+              onLoad={setDuration} // Callback when video loads
+              onProgress={setTime} // Callback every ~250ms with currentTime
+              key={state.reRender}
+              style={styles.audioElement}
+            />
+          </View>
         </View>
-        <View style={styles.control}>
-          <SeekBar
-            onSeek={seek}
-            trackLength={state.totalLength}
-            onSlidingStart={() => setState({ ...state, paused: true })}
-            currentPosition={state.currentPosition}
-          />
-          <Control
-            onPressPlay={() => setState({ ...state, paused: false })}
-            onPressPause={() => setState({ ...state, paused: true })}
-            onForward={handleOnForward}
-            onBack={handleOnBack}
-            paused={state.paused}
-            forwardDisabled={state.isForwardDisabled}
-          />
-          <Video
-            rate={1.0}
-            volume={1.0}
-            source={{
-              uri: track.audioUrl,
-            }} // Can be a URL or a local file.
-            ref={audioElement}
-            paused={state.paused}
-            seek={state.dragTime || null}
-            onLoad={setDuration} // Callback when video loads
-            onProgress={setTime} // Callback every ~250ms with currentTime
-            key={state.reRender}
-            style={styles.audioElement}
-          />
-        </View>
-      </View>
+      </LinearGradient>
     </View>
   );
 };
@@ -122,26 +127,18 @@ const Player = ({ tracks, trackId }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'rgba(4,4,4,0.8)',
+  },
+  background: {
+    flex: 1,
   },
   content: {
     flex: 1,
-    // flexDirection: 'row',
-    // flexWrap: 'wrap',
-    // justifyContent: 'space-around',
-    backgroundColor: 'red',
   },
   picture: {
     flex: 1,
-    // flexDirection: 'row',
-    backgroundColor: 'green',
-    // height: '50%',
-    // justifyContent: 'center',
   },
   control: {
     flex: 1,
-    // flexDirection: 'row',
-    backgroundColor: 'blue',
   },
   audioElement: {
     display: 'none',
