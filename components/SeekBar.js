@@ -1,5 +1,6 @@
 import React from 'react';
-import Slider from 'react-native-slider';
+// import Slider from 'react-native-slider';
+import Slider from '@react-native-community/slider';
 import { StyleSheet, View, Text } from 'react-native';
 
 const pad = (n, width, z = 0) => {

@@ -18,8 +18,6 @@ const Player = ({ tracks, trackId }) => {
     reRender: '1',
     isForwardDisabled: false,
   });
-  // const [track, setTrack] = useState(tracks[trackId]);
-  const audioElement = useRef(null);
 
   useEffect(() => {
     if (state.currentPosition >= state.totalLength) {
@@ -33,7 +31,6 @@ const Player = ({ tracks, trackId }) => {
       return;
     }
     setState({ ...state, isForwardDisabled: false });
-    // setTrack(tracks[state.selectedTrack]);
   }, [state.selectedTrack]);
 
   const setDuration = (data) => {
@@ -109,7 +106,6 @@ const Player = ({ tracks, trackId }) => {
               source={{
                 uri: track.audioUrl,
               }} // Can be a URL or a local file.
-              ref={audioElement}
               paused={state.paused}
               seek={state.dragTime || null}
               onLoad={setDuration} // Callback when video loads

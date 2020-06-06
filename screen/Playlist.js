@@ -1,7 +1,12 @@
 import React from 'react';
 import { FlatList, StyleSheet, View, ImageBackground } from 'react-native';
+import Modal from 'react-native-modal';
+
 import Item from '../components/Item';
 import Header from '../components/Header';
+import Player from '../components/Player';
+
+import { useModalState } from '../contexts/ModalContext';
 
 const TRACKS = [
   {
@@ -88,6 +93,8 @@ const TRACKS = [
 ];
 
 const Playlist = ({ navigation }) => {
+  const { isModalVisible, trackId } = useModalState();
+
   return (
     <View style={styles.container}>
       <Header text="Bài hát" noArrow backgroundColor="#000051" />
@@ -98,14 +105,15 @@ const Playlist = ({ navigation }) => {
           <View style={styles.flatlist}>
             <FlatList
               data={TRACKS}
-              renderItem={({ item }) => (
-                <Item item={item} navigation={navigation} tracks={TRACKS} />
-              )}
+              renderItem={({ item }) => <Item item={item} tracks={TRACKS} />}
               keyExtractor={(item) => item.id + ''}
             />
           </View>
         </ImageBackground>
       </ImageBackground>
+      <Modal isVisible={isModalVisible} style={styles.modal}>
+        <Player tracks={TRACKS} trackId={trackId} />
+      </Modal>
     </View>
   );
 };
@@ -124,6 +132,9 @@ const styles = StyleSheet.create({
   backgroundTwo: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 81, 0.8)',
+  },
+  modal: {
+    margin: 0,
   },
 });
 

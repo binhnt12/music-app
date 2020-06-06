@@ -1,19 +1,23 @@
 import React from 'react';
 import { Text, View, TouchableOpacity, StyleSheet, Image } from 'react-native';
 
-const Item = ({ item, navigation, tracks }) => {
+import { useModalState } from '../contexts/ModalContext.js';
+
+const Item = ({ item, tracks }) => {
   const pad = (number) => {
     return number < 10 ? `0${number}` : `${number}`;
   };
 
+  const { handleTrackId, handleModalVisible } = useModalState();
+
+  handleClick = (trackId) => {
+    handleTrackId(trackId);
+    handleModalVisible(true);
+  };
+
   return (
     <TouchableOpacity
-      onPress={() =>
-        navigation.navigate('PlayerModal', {
-          tracks,
-          trackId: item.id,
-        })
-      }
+      onPress={() => handleClick(item.id)}
       style={styles.container}>
       <View>
         <Text style={[styles.text, styles.number]}>{pad(item.id + 1)}</Text>
