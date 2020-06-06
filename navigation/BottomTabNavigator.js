@@ -8,7 +8,10 @@ import Playlist from '../screen/Playlist';
 const BottomTabNavigator = () => {
   const Tab = createBottomTabNavigator();
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      tabBarOptions={{
+        labelPosition: 'below-icon',
+      }}>
       <Tab.Screen
         name="PlaylistlTab"
         component={Playlist}

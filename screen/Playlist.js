@@ -11,30 +11,30 @@ import { useModalState } from '../contexts/ModalContext';
 const TRACKS = [
   {
     id: 0,
-    title: 'Cảm ơn vì đã nói câu từ chối',
-    singer: 'Hakoota Dũng Hà, Ái Phương',
+    title: 'Bạc phận',
+    singer: 'Jack, K-ICM',
     picture:
-      'https://photo-resize-zmp3.zadn.vn/w240_r1x1_jpeg/covers/7/0/70bad3af7fbe20920bbea933ef17ac9e_1489818951.jpg',
+      'https://photo-resize-zmp3.zadn.vn/w240_r1x1_jpeg/cover/4/2/5/3/425334e6f252b8c34d74d16177a5eb9d.jpg',
     audioUrl:
-      'http://vnso-zn-11-tf-mp3-s1-zmp3.zadn.vn/1376fcfe15bafce4a5ab/1621971869444679327?authen=exp=1591346236~acl=/1376fcfe15bafce4a5ab/*~hmac=0b830d3f27bf0e74206c4336ba96640c',
+      'https://feeds.soundcloud.com/stream/835204426-user510635516-b-c-ph-n.mp3',
   },
   {
     id: 1,
-    title: 'Không thể cùng nhau suốt kiếp',
-    singer: 'Hoà Minzy, Mr Siro',
+    title: '24h',
+    singer: 'LyLy, Magazine',
     picture:
-      'https://photo-resize-zmp3.zadn.vn/w240_r1x1_jpeg/cover/1/7/8/6/17861cfa5213a52daec2c556101fb421.jpg',
+      'https://photo-resize-zmp3.zadn.vn/w240_r1x1_jpeg/cover/c/5/4/d/c54df0e46c902b5b43602c57c2b77df4.jpg',
     audioUrl:
-      'http://vnso-zn-16-tf-mp3-s1-zmp3.zadn.vn/aab3d2bcc2fb2ba572ea/1104467447840469379?authen=exp=1591347150~acl=/aab3d2bcc2fb2ba572ea/*~hmac=c2fc350805bde603fd43169a3845dcd4',
+      'https://feeds.soundcloud.com/stream/835212994-user510635516-24h.mp3',
   },
   {
     id: 2,
-    title: 'Em không sai chúng ta sai',
-    singer: 'Eric',
+    title: 'Không sao đâu, em đây mà',
+    singer: 'Sunny Hạ Linh',
     picture:
-      'https://photo-resize-zmp3.zadn.vn/w240_r1x1_jpeg/cover/7/4/0/d/740d5e0fd272d2421d441e9fd5c08fdd.jpg',
+      'https://photo-resize-zmp3.zadn.vn/w240_r1x1_jpeg/cover/4/8/f/f/48ffdb72c21e5865fa0f2f1f269f0e16.jpg',
     audioUrl:
-      'http://vnso-zn-15-tf-mp3-s1-zmp3.zadn.vn/fc22f878e83f0161582e/5932759875015511356?authen=exp=1591347313~acl=/fc22f878e83f0161582e/*~hmac=0033b89865423299fb29107b211cf7e3',
+      'https://feeds.soundcloud.com/stream/835204324-user510635516-kh-ng-sao-m-em-y-r-i.mp3',
   },
   {
     id: 3,
@@ -43,34 +43,34 @@ const TRACKS = [
     picture:
       'https://photo-resize-zmp3.zadn.vn/w240_r1x1_jpeg/covers/7/0/70bad3af7fbe20920bbea933ef17ac9e_1489818951.jpg',
     audioUrl:
-      'http://vnso-zn-11-tf-mp3-s1-zmp3.zadn.vn/1376fcfe15bafce4a5ab/1621971869444679327?authen=exp=1591346236~acl=/1376fcfe15bafce4a5ab/*~hmac=0b830d3f27bf0e74206c4336ba96640c',
+      'https://feeds.soundcloud.com/stream/835204402-user510635516-c-m-n-v-n-i-c-u-t-ch-i.mp3',
   },
   {
     id: 4,
-    title: 'Không thể cùng nhau suốt kiếp',
-    singer: 'Hoà Minzy, Mr Siro',
+    title: 'Anh đang nơi đâu',
+    singer: 'Miu Lê',
     picture:
-      'https://photo-resize-zmp3.zadn.vn/w240_r1x1_jpeg/cover/1/7/8/6/17861cfa5213a52daec2c556101fb421.jpg',
+      'https://photo-resize-zmp3.zadn.vn/w240_r1x1_jpeg/avatars/f/f/ffaa21f0110ad661fe0741b5acb2bf10_1461581144.jpg',
     audioUrl:
-      'http://vnso-zn-16-tf-mp3-s1-zmp3.zadn.vn/aab3d2bcc2fb2ba572ea/1104467447840469379?authen=exp=1591347150~acl=/aab3d2bcc2fb2ba572ea/*~hmac=c2fc350805bde603fd43169a3845dcd4',
+      'https://feeds.soundcloud.com/stream/835196092-user510635516-anh-dang-noi-dau.mp3',
   },
   {
     id: 5,
-    title: 'Em không sai chúng ta sai',
-    singer: 'Eric',
+    title: 'Thằng điên',
+    singer: 'JustaTeeTee, Phương Ly',
     picture:
-      'https://photo-resize-zmp3.zadn.vn/w240_r1x1_jpeg/cover/7/4/0/d/740d5e0fd272d2421d441e9fd5c08fdd.jpg',
+      'https://photo-resize-zmp3.zadn.vn/w240_r1x1_jpeg/cover/9/d/5/c/9d5c56a277a06a48ec7956a4fd17e4c1.jpg',
     audioUrl:
-      'http://vnso-zn-15-tf-mp3-s1-zmp3.zadn.vn/fc22f878e83f0161582e/5932759875015511356?authen=exp=1591347313~acl=/fc22f878e83f0161582e/*~hmac=0033b89865423299fb29107b211cf7e3',
+      'https://feeds.soundcloud.com/stream/835213687-user510635516-thang-dien.mp3',
   },
   {
     id: 6,
-    title: 'Cảm ơn vì đã nói câu từ chối',
-    singer: 'Hakoota Dũng Hà, Ái Phương',
+    title: 'Anh Mơ',
+    singer: 'Anh Khang',
     picture:
-      'https://photo-resize-zmp3.zadn.vn/w240_r1x1_jpeg/covers/7/0/70bad3af7fbe20920bbea933ef17ac9e_1489818951.jpg',
+      'https://photo-resize-zmp3.zadn.vn/w240_r1x1_jpeg/covers/b/e/be470579ff1b903cbe28dcf7fdd1b1ce_1322733762.jpg',
     audioUrl:
-      'http://vnso-zn-11-tf-mp3-s1-zmp3.zadn.vn/1376fcfe15bafce4a5ab/1621971869444679327?authen=exp=1591346236~acl=/1376fcfe15bafce4a5ab/*~hmac=0b830d3f27bf0e74206c4336ba96640c',
+      'https://feeds.soundcloud.com/stream/835204435-user510635516-anh-mo.mp3',
   },
   {
     id: 7,
@@ -79,16 +79,16 @@ const TRACKS = [
     picture:
       'https://photo-resize-zmp3.zadn.vn/w240_r1x1_jpeg/cover/1/7/8/6/17861cfa5213a52daec2c556101fb421.jpg',
     audioUrl:
-      'http://vnso-zn-16-tf-mp3-s1-zmp3.zadn.vn/aab3d2bcc2fb2ba572ea/1104467447840469379?authen=exp=1591347150~acl=/aab3d2bcc2fb2ba572ea/*~hmac=c2fc350805bde603fd43169a3845dcd4',
+      'https://feeds.soundcloud.com/stream/835204300-user510635516-kh-ng-th-c-ng-nhau-su-t-ki-p.mp3',
   },
   {
     id: 8,
     title: 'Em không sai chúng ta sai',
-    singer: 'Eric',
+    singer: 'Erik',
     picture:
       'https://photo-resize-zmp3.zadn.vn/w240_r1x1_jpeg/cover/7/4/0/d/740d5e0fd272d2421d441e9fd5c08fdd.jpg',
     audioUrl:
-      'http://vnso-zn-15-tf-mp3-s1-zmp3.zadn.vn/fc22f878e83f0161582e/5932759875015511356?authen=exp=1591347313~acl=/fc22f878e83f0161582e/*~hmac=0033b89865423299fb29107b211cf7e3',
+      'https://feeds.soundcloud.com/stream/835204384-user510635516-em-khong-sai-chung-ta-sai.mp3',
   },
 ];
 

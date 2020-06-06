@@ -1,5 +1,5 @@
-import React, { useRef, useEffect, useState, useMemo } from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useEffect, useState, useMemo } from 'react';
+import { StyleSheet, View, Dimensions } from 'react-native';
 import Video from 'react-native-video';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -7,6 +7,8 @@ import Header from '../components/Header';
 import Picture from './Picture';
 import SeekBar from '../components/SeekBar';
 import Control from '../components/Control';
+
+const { width, height } = Dimensions.get('window');
 
 const Player = ({ tracks, trackId }) => {
   const [state, setState] = useState({
@@ -17,6 +19,7 @@ const Player = ({ tracks, trackId }) => {
     selectedTrack: trackId,
     reRender: '1',
     isForwardDisabled: false,
+    isPortrait: width < height,
   });
 
   useEffect(() => {
@@ -75,13 +78,21 @@ const Player = ({ tracks, trackId }) => {
     state.selectedTrack,
   ]);
 
+  const onLayout = (e) => {
+    let isPortrait = e.nativeEvent.layout.height > e.nativeEvent.layout.width;
+    if (isPortrait != state.isPortrait) {
+      setState({ ...state, isPortrait });
+    }
+  };
+
   return (
-    <View style={styles.container}>
+    <View style={styles.container} onLayout={onLayout}>
       <Header text={track.title} backgroundColor="#000051" />
       <LinearGradient
         colors={['#E1E2E1', '#283593', '#001064']}
         style={styles.background}>
-        <View style={styles.content}>
+        <View
+          style={state.isPortrait ? styles.contentPortrait : styles.content}>
           <View style={styles.picture}>
             <Picture paused={state.paused} img={track.picture} />
           </View>
@@ -103,9 +114,7 @@ const Player = ({ tracks, trackId }) => {
             <Video
               rate={1.0}
               volume={1.0}
-              source={{
-                uri: track.audioUrl,
-              }} // Can be a URL or a local file.
+              source={{ uri: track.audioUrl }} // Can be a URL or a local file.
               paused={state.paused}
               seek={state.dragTime || null}
               onLoad={setDuration} // Callback when video loads
@@ -127,8 +136,13 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
   },
+  contentPortrait: {
+    flex: 1,
+    flexDirection: 'column',
+  },
   content: {
     flex: 1,
+    flexDirection: 'row',
   },
   picture: {
     flex: 1,
