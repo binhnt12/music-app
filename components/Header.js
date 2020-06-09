@@ -7,7 +7,7 @@ import arrowDown from '../img/ic_keyboard_arrow_down_white.png';
 import queueMusic from '../img/ic_queue_music_white.png';
 
 const Header = ({ text, noArrow, backgroundColor }) => {
-  const { handleModalVisible } = useModalState();
+  const { handleShowModal } = useModalState();
 
   return (
     <View style={[styles.container, { backgroundColor }]}>
@@ -15,7 +15,7 @@ const Header = ({ text, noArrow, backgroundColor }) => {
         {!noArrow && (
           <TouchableOpacity
             style={styles.img}
-            onPress={() => handleModalVisible(false)}>
+            onPress={() => handleShowModal(false)}>
             <Image source={arrowDown} />
           </TouchableOpacity>
         )}

@@ -3,24 +3,17 @@ import React from 'react';
 var ModalContext = React.createContext();
 
 function ModalProvider({ children }) {
-  var [isModalVisible, setModalVisible] = React.useState(false);
-  var [trackId, setTrackId] = React.useState(0);
+  var [isShowModal, setShowModal] = React.useState(false);
 
-  handleModalVisible = (value) => {
-    setModalVisible(value);
-  };
-
-  handleTrackId = (value) => {
-    setTrackId(value);
+  const handleShowModal = (value) => {
+    setShowModal(value);
   };
 
   return (
     <ModalContext.Provider
       value={{
-        isModalVisible,
-        handleModalVisible,
-        trackId,
-        handleTrackId,
+        isShowModal,
+        handleShowModal,
       }}>
       {children}
     </ModalContext.Provider>

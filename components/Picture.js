@@ -1,7 +1,7 @@
 import React from 'react';
 import { Animated, Easing, StyleSheet, View } from 'react-native';
 
-const Picture = ({ paused, img }) => {
+const Picture = ({ paused, img, type }) => {
   let spinValue = new Animated.Value(0);
 
   const animated = Animated.loop(
@@ -21,9 +21,13 @@ const Picture = ({ paused, img }) => {
   });
 
   return (
-    <View style={styles.container}>
+    <View
+      style={type === 'large' ? styles.containerLarge : styles.containerSmall}>
       <Animated.Image
-        style={[styles.img, { transform: [{ rotate: spin }] }]}
+        style={[
+          type === 'large' ? styles.imgLarge : styles.imgSmall,
+          { transform: [{ rotate: spin }] },
+        ]}
         source={{ uri: img }}
       />
     </View>
@@ -31,14 +35,20 @@ const Picture = ({ paused, img }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  containerLarge: {
     marginTop: 50,
     alignItems: 'center',
   },
-  img: {
+  containerSmall: {},
+  imgLarge: {
     width: 200,
     height: 200,
     borderRadius: 200 / 2,
+  },
+  imgSmall: {
+    height: 42,
+    width: 42,
+    borderRadius: 42 / 2,
   },
 });
 

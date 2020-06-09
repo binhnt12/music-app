@@ -5,6 +5,7 @@ import Modal from 'react-native-modal';
 import Item from '../components/Item';
 import Header from '../components/Header';
 import Player from '../components/Player';
+import Bottom from '../components/Bottom';
 
 import { useModalState } from '../contexts/ModalContext';
 
@@ -29,7 +30,7 @@ const TRACKS = [
   },
   {
     id: 2,
-    title: 'Không sao đâu, em đây mà',
+    title: 'Không sao đâu, em đây rồi',
     singer: 'Sunny Hạ Linh',
     picture:
       'https://photo-resize-zmp3.zadn.vn/w240_r1x1_jpeg/cover/4/8/f/f/48ffdb72c21e5865fa0f2f1f269f0e16.jpg',
@@ -83,17 +84,17 @@ const TRACKS = [
   },
   {
     id: 8,
-    title: 'Em không sai chúng ta sai',
+    title: 'Em không sai chúng ta saii',
     singer: 'Erik',
     picture:
       'https://photo-resize-zmp3.zadn.vn/w240_r1x1_jpeg/cover/7/4/0/d/740d5e0fd272d2421d441e9fd5c08fdd.jpg',
     audioUrl:
-      'https://feeds.soundcloud.com/stream/835204384-user510635516-em-khong-sai-chung-ta-sai.mp3',
+      'file:///Volumes/Entertaiment/Music/Lossless/Anh_Mo-Anh_Khang.mp3',
   },
 ];
 
-const Playlist = ({ navigation }) => {
-  const { isModalVisible, trackId } = useModalState();
+const Playlist = () => {
+  const { isShowModal } = useModalState();
 
   return (
     <View style={styles.container}>
@@ -102,18 +103,23 @@ const Playlist = ({ navigation }) => {
         source={require('../img/background.jpg')}
         style={styles.backgroundOne}>
         <ImageBackground style={styles.backgroundTwo}>
-          <View style={styles.flatlist}>
-            <FlatList
-              data={TRACKS}
-              renderItem={({ item }) => <Item item={item} tracks={TRACKS} />}
-              keyExtractor={(item) => item.id + ''}
-            />
-          </View>
+          <FlatList
+            style={styles.flatlist}
+            data={TRACKS}
+            renderItem={({ item }) => <Item item={item} />}
+            keyExtractor={(item) => item.id + ''}
+          />
         </ImageBackground>
       </ImageBackground>
-      <Modal isVisible={isModalVisible} style={styles.modal}>
-        <Player tracks={TRACKS} trackId={trackId} />
+      <Modal
+        isVisible={true}
+        hasBackdrop={false}
+        coverScreen={isShowModal}
+        playInBackground={true}
+        style={isShowModal ? styles.showModal : styles.hideModal}>
+        <Player tracks={TRACKS} />
       </Modal>
+      <Bottom picture={TRACKS[0].picture} />
     </View>
   );
 };
@@ -123,7 +129,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   flatlist: {
-    marginTop: 16,
+    paddingTop: 16,
+    paddingBottom: 0,
   },
   backgroundOne: {
     flex: 1,
@@ -133,8 +140,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'rgba(0, 0, 81, 0.8)',
   },
-  modal: {
+  showModal: {
     margin: 0,
+    height: 0,
+  },
+  hideModal: {
+    display: 'none',
+    margin: 0,
+    height: 0,
   },
 });
 

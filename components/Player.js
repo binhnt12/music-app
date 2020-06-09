@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { StyleSheet, View, Dimensions } from 'react-native';
 import Video from 'react-native-video';
 import LinearGradient from 'react-native-linear-gradient';
@@ -8,80 +8,112 @@ import Picture from './Picture';
 import SeekBar from '../components/SeekBar';
 import Control from '../components/Control';
 
+import { usePlayingState } from '../contexts/PlayingContext';
+
 const { width, height } = Dimensions.get('window');
 
-const Player = ({ tracks, trackId }) => {
+const Player = ({ tracks }) => {
+  const {
+    trackId,
+    handleTrackId,
+    paused,
+    handlePaused,
+    isNext,
+    handleNext,
+    isPrev,
+    handlePrev,
+  } = usePlayingState();
+
   const [state, setState] = useState({
-    paused: false,
     totalLength: 1,
     currentPosition: 0,
     dragTime: null,
-    selectedTrack: trackId,
     reRender: '1',
     isForwardDisabled: false,
     isPortrait: width < height,
   });
 
+  const isFirstRun = useRef(true);
+
   useEffect(() => {
-    if (state.currentPosition >= state.totalLength) {
+    if (isNext) {
+      handleOnForward();
+    }
+    handleNext(false);
+  }, [isNext]);
+
+  useEffect(() => {
+    if (isPrev) {
+      handleOnBack();
+    }
+    handlePrev(false);
+  }, [isPrev]);
+
+  useEffect(() => {
+    if (isFirstRun.current) {
+      isFirstRun.current = false;
+      return;
+    }
+    if (state.currentPosition >= state.totalLength - 1) {
       handleOnForward();
     }
   }, [state.currentPosition]);
 
   useEffect(() => {
-    if (state.selectedTrack === tracks.length - 1) {
-      setState({ ...state, isForwardDisabled: true });
+    if (trackId === tracks.length - 1) {
+      setState((state) => ({ ...state, isForwardDisabled: true }));
       return;
     }
-    setState({ ...state, isForwardDisabled: false });
-  }, [state.selectedTrack]);
+    setState((state) => ({ ...state, isForwardDisabled: false }));
+  }, [trackId]);
 
   const setDuration = (data) => {
-    setState({
+    setState((state) => ({
       ...state,
       totalLength: Math.floor(data.duration),
-    });
+    }));
   };
 
   const setTime = (data) => {
-    setState({
+    setState((state) => ({
       ...state,
       currentPosition: Math.floor(data.currentTime),
-    });
+    }));
   };
 
   const seek = (time) => {
     time = Math.round(time);
-    setState({
+    setState((state) => ({
       ...state,
       dragTime: time,
-      paused: false,
-    });
+    }));
+    handlePaused(false);
   };
 
   const handleOnForward = () => {
-    if (state.selectedTrack < tracks.length - 1) {
-      setState({ ...state, selectedTrack: state.selectedTrack + 1 });
+    if (trackId < tracks.length - 1) {
+      handleTrackId(trackId + 1);
     }
   };
 
   const handleOnBack = () => {
-    if (state.selectedTrack > 0) {
-      setState({ ...state, selectedTrack: state.selectedTrack - 1 });
+    if (trackId > 0) {
+      handleTrackId(trackId - 1);
     }
-    if (state.selectedTrack === 0) {
-      setState({ ...state, reRender: state.reRender === '1' ? '0' : '1' });
+    if (trackId === 0) {
+      setState((state) => ({
+        ...state,
+        reRender: state.reRender === '1' ? '0' : '1',
+      }));
     }
   };
 
-  const track = useMemo(() => tracks[state.selectedTrack], [
-    state.selectedTrack,
-  ]);
+  const track = useMemo(() => tracks[trackId], [trackId]);
 
   const onLayout = (e) => {
     let isPortrait = e.nativeEvent.layout.height > e.nativeEvent.layout.width;
     if (isPortrait != state.isPortrait) {
-      setState({ ...state, isPortrait });
+      setState((state) => ({ ...state, isPortrait }));
     }
   };
 
@@ -94,33 +126,35 @@ const Player = ({ tracks, trackId }) => {
         <View
           style={state.isPortrait ? styles.contentPortrait : styles.content}>
           <View style={styles.picture}>
-            <Picture paused={state.paused} img={track.picture} />
+            <Picture paused={paused} img={track.picture} type="large" />
           </View>
           <View style={styles.control}>
             <SeekBar
               onSeek={seek}
               trackLength={state.totalLength}
-              onSlidingStart={() => setState({ ...state, paused: true })}
+              onSlidingStart={() => handlePaused(true)}
               currentPosition={state.currentPosition}
             />
             <Control
-              onPressPlay={() => setState({ ...state, paused: false })}
-              onPressPause={() => setState({ ...state, paused: true })}
+              onPressPlay={() => handlePaused(false)}
+              onPressPause={() => handlePaused(true)}
               onForward={handleOnForward}
               onBack={handleOnBack}
-              paused={state.paused}
+              paused={paused}
               forwardDisabled={state.isForwardDisabled}
             />
             <Video
               rate={1.0}
               volume={1.0}
               source={{ uri: track.audioUrl }} // Can be a URL or a local file.
-              paused={state.paused}
+              paused={paused}
+              audioOnly={true}
               seek={state.dragTime || null}
               onLoad={setDuration} // Callback when video loads
               onProgress={setTime} // Callback every ~250ms with currentTime
               key={state.reRender}
               style={styles.audioElement}
+              // playInBackground={true}
             />
           </View>
         </View>
