@@ -111,14 +111,13 @@ const Playlist = () => {
           />
         </ImageBackground>
       </ImageBackground>
-      <Modal
-        isVisible={true}
-        hasBackdrop={false}
-        coverScreen={isShowModal}
-        playInBackground={true}
-        style={isShowModal ? styles.showModal : styles.hideModal}>
+      <View
+        style={[
+          styles.modal,
+          !isShowModal && { height: 0, overflow: 'hidden' },
+        ]}>
         <Player tracks={TRACKS} />
-      </Modal>
+      </View>
       <Bottom picture={TRACKS[0].picture} />
     </View>
   );
@@ -140,14 +139,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'rgba(0, 0, 81, 0.8)',
   },
-  showModal: {
-    margin: 0,
-    height: 0,
-  },
-  hideModal: {
-    display: 'none',
-    margin: 0,
-    height: 0,
+  modal: {
+    flex: 1,
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0,
+    zIndex: 10,
   },
 });
 
