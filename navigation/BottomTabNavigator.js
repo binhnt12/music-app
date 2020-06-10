@@ -5,8 +5,12 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Detail from '../screen/Detail';
 import Playlist from '../screen/Playlist';
 
+import { useModalState } from '../contexts/ModalContext';
+
 const BottomTabNavigator = () => {
   const Tab = createBottomTabNavigator();
+  const { isShowModal } = useModalState();
+
   return (
     <Tab.Navigator
       tabBarOptions={{
@@ -28,6 +32,7 @@ const BottomTabNavigator = () => {
               Playlist
             </Text>
           ),
+          tabBarVisible: !isShowModal,
         }}
       />
       <Tab.Screen name="DetailTab" component={Detail} />

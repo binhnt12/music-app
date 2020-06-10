@@ -1,6 +1,12 @@
-import React from 'react';
-import { FlatList, StyleSheet, View, ImageBackground } from 'react-native';
-import Modal from 'react-native-modal';
+import React, { useEffect, useRef } from 'react';
+import {
+  FlatList,
+  StyleSheet,
+  View,
+  ImageBackground,
+  Animated,
+  Dimensions,
+} from 'react-native';
 
 import Item from '../components/Item';
 import Header from '../components/Header';
@@ -93,8 +99,44 @@ const TRACKS = [
   },
 ];
 
+const { height } = Dimensions.get('window');
+
 const Playlist = () => {
   const { isShowModal } = useModalState();
+  let translateToTopValue = new Animated.Value(1);
+  let translateToBottomValue = new Animated.Value(0);
+  const isFirstRun = useRef(true);
+
+  useEffect(() => {
+    if (isFirstRun.current) {
+      isFirstRun.current = false;
+      return;
+    }
+    if (isShowModal) {
+      Animated.timing(translateToTopValue, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: true,
+      }).start();
+    }
+    if (!isShowModal) {
+      Animated.timing(translateToBottomValue, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [isShowModal]);
+
+  const translateToTop = translateToTopValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, height],
+  });
+
+  const translateToBottom = translateToBottomValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, height],
+  });
 
   return (
     <View style={styles.container}>
@@ -111,13 +153,15 @@ const Playlist = () => {
           />
         </ImageBackground>
       </ImageBackground>
-      <View
+      <Animated.View
         style={[
           styles.modal,
-          !isShowModal && { height: 0, overflow: 'hidden' },
+          isShowModal
+            ? { transform: [{ translateY: translateToTop }] }
+            : { transform: [{ translateY: translateToBottom }] },
         ]}>
         <Player tracks={TRACKS} />
-      </View>
+      </Animated.View>
       <Bottom picture={TRACKS[0].picture} />
     </View>
   );
