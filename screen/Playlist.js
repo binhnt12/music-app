@@ -23,38 +23,26 @@ const Playlist = () => {
   const { isShowModal } = useModalState();
   const { trackId } = usePlayingState();
   const [translateY, setTranslateY] = useState(null);
+  const isFirstRun = useRef(true);
 
-  let translateToTopValue = new Animated.Value(0);
-  let translateToBottomValue = new Animated.Value(0);
+  let translateValue = new Animated.Value(0);
 
   useEffect(() => {
-    isShowModal
-      ? setTranslateY(translateToTop)
-      : setTranslateY(translateToBottom);
-    if (isShowModal) {
-      Animated.timing(translateToTopValue, {
-        toValue: 1,
-        duration: 500,
-        useNativeDriver: true,
-      }).start();
+    if (isFirstRun.current) {
+      isFirstRun.current = false;
+      return;
     }
-    if (!isShowModal) {
-      Animated.timing(translateToBottomValue, {
-        toValue: 1,
-        duration: 500,
-        useNativeDriver: true,
-      }).start();
-    }
+    setTranslateY(translateModal);
+    Animated.timing(translateValue, {
+      toValue: 1,
+      duration: 500,
+      useNativeDriver: true,
+    }).start();
   }, [isShowModal]);
 
-  const translateToTop = translateToTopValue.interpolate({
+  const translateModal = translateValue.interpolate({
     inputRange: [0, 1],
-    outputRange: [height, 0],
-  });
-
-  const translateToBottom = translateToBottomValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, height],
+    outputRange: isShowModal ? [height, 0] : [0, height],
   });
 
   return (
