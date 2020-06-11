@@ -6,10 +6,11 @@ import Picture from './Picture';
 import { useModalState } from '../contexts/ModalContext';
 import { usePlayingState } from '../contexts/PlayingContext';
 
-const Bottom = ({ picture }) => {
-  const { isShowModal, handleShowModal } = useModalState();
+const Bottom = ({ track }) => {
+  const { handleShowModal, isShowModal } = useModalState();
   const { paused, handlePaused, handleNext, handlePrev } = usePlayingState();
 
+  // console.log(isShowModal);
   return (
     <View style={styles.container}>
       <View style={styles.seek}>
@@ -19,10 +20,10 @@ const Bottom = ({ picture }) => {
         <TouchableOpacity
           style={styles.imageAndContent}
           onPress={() => handleShowModal(true)}>
-          <Picture img={null} style={styles.img} />
+          <Picture paused={paused} img={track.picture} style={styles.img} />
           <View style={styles.content}>
-            <Text style={styles.title}>Giac mo trua</Text>
-            <Text style={styles.singer}>Thuy Chi</Text>
+            <Text style={styles.title}>{track.title}</Text>
+            <Text style={styles.singer}>{track.singer}</Text>
           </View>
         </TouchableOpacity>
         <View style={styles.control}>
