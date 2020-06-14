@@ -1,29 +1,49 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import React, { useMemo } from 'react';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Picture from './Picture';
 import { useModalState } from '../contexts/ModalContext';
 import { usePlayingState } from '../contexts/PlayingContext';
 
-const Bottom = ({ track }) => {
-  const { handleShowModal, isShowModal } = useModalState();
-  const { paused, handlePaused, handleNext, handlePrev } = usePlayingState();
+let { width } = Dimensions.get('window');
 
-  // console.log(isShowModal);
+const Bottom = ({ tracks }) => {
+  const { handleShowModal } = useModalState();
+  const {
+    trackId,
+    paused,
+    handlePaused,
+    handleNext,
+    handlePrev,
+    ratio,
+  } = usePlayingState();
+
+  const track = tracks[trackId];
+
   return (
     <View style={styles.container}>
       <View style={styles.seek}>
-        <View style={styles.playing} />
+        <View style={[styles.playing, { width: `${ratio * 100}%` }]} />
       </View>
       <View style={styles.innerContainer}>
         <TouchableOpacity
           style={styles.imageAndContent}
           onPress={() => handleShowModal(true)}>
-          <Picture paused={paused} img={track.picture} style={styles.img} />
+          <Picture paused={paused} img={track.picture} />
           <View style={styles.content}>
-            <Text style={styles.title}>{track.title}</Text>
-            <Text style={styles.singer}>{track.singer}</Text>
+            <Text numberOfLines={1} style={styles.title}>
+              {track.title}
+            </Text>
+            <Text numberOfLines={1} style={styles.singer}>
+              {track.singer}
+            </Text>
           </View>
         </TouchableOpacity>
         <View style={styles.control}>
@@ -55,13 +75,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   seek: {
-    height: 2,
+    height: 3,
     width: '100%',
     backgroundColor: 'gray',
   },
   playing: {
-    height: 2,
-    width: '60%',
+    height: 3,
     backgroundColor: '#9c4dcc',
   },
   innerContainer: {
@@ -69,8 +88,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingRight: 8,
-    paddingLeft: 8,
+    paddingRight: 16,
+    paddingLeft: 16,
   },
   imageAndContent: {
     flexDirection: 'row',
@@ -82,10 +101,12 @@ const styles = StyleSheet.create({
   title: {
     color: 'black',
     fontSize: 14,
+    width: width - 200,
   },
   singer: {
     color: '#a0a0a0',
     fontSize: 14,
+    width: width - 200,
   },
   control: {
     width: 120,

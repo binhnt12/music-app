@@ -1,23 +1,37 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Detail from '../screen/Detail';
+import Home from '../screen/Home';
 import Playlist from '../screen/Playlist';
 
-import { useModalState } from '../contexts/ModalContext';
+const Tab = createMaterialTopTabNavigator();
 
 const BottomTabNavigator = () => {
-  const Tab = createBottomTabNavigator();
-  const { isShowModal } = useModalState();
-
   return (
     <Tab.Navigator
-      tabBarOptions={{
-        labelPosition: 'below-icon',
-      }}>
+      initialRouteName="Home"
+      tabBarPosition="bottom"
+      tabBarOptions={{ showIcon: true, tabStyle: { padding: 0 } }}>
       <Tab.Screen
-        name="PlaylistlTab"
+        name="Home"
+        component={Home}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <Icon
+              name="home"
+              size={25}
+              color={focused ? '#283593' : '#a0a0a0'}
+            />
+          ),
+          tabBarLabel: ({ focused }) => (
+            <Text style={focused ? styles.textFocused : styles.text}>Home</Text>
+          ),
+        }}
+      />
+
+      <Tab.Screen
+        name="Playlist"
         component={Playlist}
         options={{
           tabBarIcon: ({ focused }) => (
@@ -32,21 +46,19 @@ const BottomTabNavigator = () => {
               Playlist
             </Text>
           ),
-          tabBarVisible: !isShowModal,
         }}
       />
-      <Tab.Screen name="DetailTab" component={Detail} />
     </Tab.Navigator>
   );
 };
 
 const styles = StyleSheet.create({
   text: {
-    fontSize: 12,
+    fontSize: 11,
     color: '#a0a0a0',
   },
   textFocused: {
-    fontSize: 12,
+    fontSize: 11,
     color: '#283593',
   },
 });

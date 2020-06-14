@@ -1,11 +1,10 @@
 import React from 'react';
-import Player from '../components/Player';
 
 var PlayingContext = React.createContext();
 
 function PlayingProvider({ children }) {
   var [trackId, setTrackId] = React.useState(0);
-  var [currentPosition, setCurrentPosition] = React.useState(0);
+  var [ratio, setRatio] = React.useState(0);
   var [paused, setPaused] = React.useState(true);
   var [isNext, setNext] = React.useState(false);
   var [isPrev, setPrev] = React.useState(false);
@@ -14,8 +13,8 @@ function PlayingProvider({ children }) {
     setTrackId(value);
   };
 
-  const handleCurrentPosition = (value) => {
-    setCurrentPosition(value);
+  const handleRatio = (value) => {
+    setRatio(value);
   };
 
   const handlePaused = (value) => {
@@ -35,8 +34,8 @@ function PlayingProvider({ children }) {
       value={{
         trackId,
         handleTrackId,
-        currentPosition,
-        handleCurrentPosition,
+        ratio,
+        handleRatio,
         paused,
         handlePaused,
         isNext,

@@ -14,14 +14,15 @@ import Player from '../components/Player';
 import Bottom from '../components/Bottom';
 
 import { useModalState } from '../contexts/ModalContext';
-import { usePlayingState } from '../contexts/PlayingContext';
+import { useCategoryState } from '../contexts/CategoryContext';
 import { TRACKS } from '../static/tracks';
 
 const { height } = Dimensions.get('window');
 
 const Playlist = () => {
   const { isShowModal } = useModalState();
-  const { trackId } = usePlayingState();
+  const { categoryId, selectedCategoryId } = useCategoryState();
+
   const [translateY, setTranslateY] = useState(null);
   const isFirstRun = useRef(true);
 
@@ -33,9 +34,8 @@ const Playlist = () => {
       return;
     }
     setTranslateY(translateModal);
-    Animated.timing(translateValue, {
+    Animated.spring(translateValue, {
       toValue: 1,
-      duration: 500,
       useNativeDriver: true,
     }).start();
   }, [isShowModal]);
@@ -54,7 +54,7 @@ const Playlist = () => {
         <ImageBackground style={styles.backgroundTwo}>
           <FlatList
             style={styles.flatlist}
-            data={TRACKS}
+            data={TRACKS[selectedCategoryId]}
             renderItem={({ item }) => <Item item={item} />}
             keyExtractor={(item) => item.id + ''}
           />
@@ -65,9 +65,9 @@ const Playlist = () => {
           styles.modal,
           { transform: [{ translateY: translateY || height }] },
         ]}>
-        <Player tracks={TRACKS} />
+        <Player tracks={TRACKS[categoryId]} />
       </Animated.View>
-      <Bottom track={TRACKS[trackId]} />
+      <Bottom tracks={TRACKS[categoryId]} />
     </View>
   );
 };
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
     left: 0,
-    zIndex: 10,
+    zIndex: 2,
   },
 });
 

@@ -22,6 +22,7 @@ const Player = ({ tracks }) => {
     handleNext,
     isPrev,
     handlePrev,
+    handleRatio,
   } = usePlayingState();
 
   const [state, setState] = useState({
@@ -57,6 +58,7 @@ const Player = ({ tracks }) => {
     if (state.currentPosition >= state.totalLength - 1) {
       handleOnForward();
     }
+    handleRatio(state.currentPosition / state.totalLength);
   }, [state.currentPosition]);
 
   useEffect(() => {
@@ -108,7 +110,7 @@ const Player = ({ tracks }) => {
     }
   };
 
-  const track = useMemo(() => tracks[trackId], [trackId]);
+  const track = tracks[trackId];
 
   const onLayout = (e) => {
     let isPortrait = e.nativeEvent.layout.height > e.nativeEvent.layout.width;

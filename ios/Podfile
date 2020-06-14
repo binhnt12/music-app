@@ -87,6 +87,8 @@ target 'Mp3App' do
 
   pod 'react-native-slider', :path => '../node_modules/@react-native-community/slider'
 
+  pod 'RNReanimated', :path => '../node_modules/react-native-reanimated'
+
   target 'Mp3AppTests' do
     inherit! :complete
     # Pods for testing

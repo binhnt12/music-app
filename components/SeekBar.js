@@ -31,11 +31,10 @@ const SeekBar = ({ trackLength, currentPosition, onSlidingStart, onSeek }) => {
         onSlidingStart={onSlidingStart}
         onSlidingComplete={onSeek}
         value={currentPosition}
-        thumbTintColor="#001064"
+        thumbTintColor="white"
         minimumTrackTintColor="white"
         maximumTrackTintColor="gray"
       />
-      <Text>Value: {currentPosition}</Text>
     </View>
   );
 };
