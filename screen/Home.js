@@ -2,14 +2,13 @@ import React from 'react';
 import {
   Text,
   View,
-  FlatList,
-  ScrollView,
   Image,
   TouchableOpacity,
   StyleSheet,
   Dimensions,
 } from 'react-native';
-// import { FlatList } from 'react-navigation';
+import { FlatList } from 'react-native-gesture-handler';
+
 import { CATEGORY } from '../static/tracks';
 import { useCategoryState } from '../contexts/CategoryContext';
 import { useModalState } from '../contexts/ModalContext';
@@ -21,7 +20,7 @@ const Item = ({ navigation, item }) => {
   const { handleShowModal } = useModalState();
 
   const handleSwitch = (id) => {
-    handleSelectedCategoryId(item.id);
+    handleSelectedCategoryId(id);
     handleShowModal(false);
     navigation.navigate('Playlist');
   };
@@ -36,7 +35,7 @@ const Item = ({ navigation, item }) => {
   );
 };
 
-export default function Home({ navigation }) {
+const Home = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Image
@@ -61,7 +60,9 @@ export default function Home({ navigation }) {
       />
     </View>
   );
-}
+};
+
+export default Home;
 
 const styles = StyleSheet.create({
   container: {

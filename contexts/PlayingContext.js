@@ -3,7 +3,7 @@ import React from 'react';
 var PlayingContext = React.createContext();
 
 function PlayingProvider({ children }) {
-  var [trackId, setTrackId] = React.useState(0);
+  var [trackId, setTrackId] = React.useState(null);
   var [ratio, setRatio] = React.useState(0);
   var [paused, setPaused] = React.useState(true);
   var [isNext, setNext] = React.useState(false);

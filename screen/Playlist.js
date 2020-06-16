@@ -65,9 +65,9 @@ const Playlist = () => {
           styles.modal,
           { transform: [{ translateY: translateY || height }] },
         ]}>
-        <Player tracks={TRACKS[categoryId]} />
+        {categoryId && <Player tracks={TRACKS[categoryId]} />}
       </Animated.View>
-      <Bottom tracks={TRACKS[categoryId]} />
+      {categoryId && <Bottom tracks={TRACKS[categoryId]} />}
     </View>
   );
 };

@@ -3,7 +3,7 @@ import React from 'react';
 var CategoryContext = React.createContext();
 
 function CategoryProvider({ children }) {
-  var [categoryId, setCategoryId] = React.useState(0);
+  var [categoryId, setCategoryId] = React.useState(null);
   var [selectedCategoryId, setSelectedCategoryId] = React.useState(0);
 
   const handleSelectedCategoryId = (index) => {
