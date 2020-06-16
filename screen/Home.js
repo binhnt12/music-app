@@ -3,11 +3,13 @@ import {
   Text,
   View,
   FlatList,
+  ScrollView,
   Image,
   TouchableOpacity,
   StyleSheet,
   Dimensions,
 } from 'react-native';
+// import { FlatList } from 'react-navigation';
 import { CATEGORY } from '../static/tracks';
 import { useCategoryState } from '../contexts/CategoryContext';
 import { useModalState } from '../contexts/ModalContext';
@@ -44,7 +46,12 @@ export default function Home({ navigation }) {
         }}
         style={styles.banner}
       />
-      <Text style={styles.textCategory}>Thể loại</Text>
+      <Text style={styles.textCategory}>Chủ đề</Text>
+      {/* <ScrollView horizontal={true}>
+        {CATEGORY.map((o, i) => (
+          <Item key={i + ''} navigation={navigation} item={o} />
+        ))}
+      </ScrollView> */}
       <FlatList
         data={CATEGORY}
         horizontal={true}
@@ -66,14 +73,11 @@ const styles = StyleSheet.create({
     marginTop: 16,
     marginBottom: 8,
   },
-  imgAndText: {
-    // margin: 8,
-  },
+  imgAndText: {},
   banner: {
     width: width - 16,
     height: 200,
     borderRadius: 8,
-    // margin: 8,
   },
   img: {
     width: 150,
@@ -84,5 +88,6 @@ const styles = StyleSheet.create({
   textItem: {
     fontSize: 16,
     marginTop: 4,
+    fontWeight: 'bold',
   },
 });

@@ -1,11 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+// import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Home from '../screen/Home';
 import Playlist from '../screen/Playlist';
 
 const Tab = createMaterialTopTabNavigator();
+// const Tab = createBottomTabNavigator();
 
 const BottomTabNavigator = () => {
   return (
