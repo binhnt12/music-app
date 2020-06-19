@@ -23,6 +23,10 @@ const Player = ({ tracks }) => {
     isPrev,
     handlePrev,
     handleRatio,
+    shuffleOn,
+    handleShuffleOn,
+    repeat,
+    handleRepeat,
   } = usePlayingState();
 
   const [state, setState] = useState({
@@ -110,6 +114,26 @@ const Player = ({ tracks }) => {
     }
   };
 
+  const onPressShuffle = () => {
+    handleShuffleOn(!shuffleOn);
+  };
+
+  const onPressRepeat = () => {
+    switch (repeat) {
+      case 'repeatOff':
+        handleRepeat('repeatOn');
+        break;
+      case 'repeatOn':
+        handleRepeat('repeatOnce');
+        break;
+      case 'repeatOnce':
+        handleRepeat('repeatOff');
+        break;
+      default:
+        return;
+    }
+  };
+
   const track = tracks[trackId];
 
   const onLayout = (e) => {
@@ -127,7 +151,8 @@ const Player = ({ tracks }) => {
         style={styles.background}>
         <View
           style={state.isPortrait ? styles.contentPortrait : styles.content}>
-          <View style={styles.picture}>
+          <View
+            style={state.isPortrait ? styles.picturePortrait : styles.picture}>
             <Picture paused={paused} img={track.picture} type="large" />
           </View>
           <View style={styles.control}>
@@ -143,6 +168,10 @@ const Player = ({ tracks }) => {
               onForward={handleOnForward}
               onBack={handleOnBack}
               paused={paused}
+              onPressShuffle={onPressShuffle}
+              shuffleOn={shuffleOn}
+              onPressRepeat={onPressRepeat}
+              repeat={repeat}
               forwardDisabled={state.isForwardDisabled}
             />
             <Video
@@ -180,8 +209,14 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
   },
+  picturePortrait: {
+    flex: 1,
+  },
   picture: {
     flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    marginBottom: 50,
   },
   control: {
     flex: 1,

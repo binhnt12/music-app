@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -12,9 +12,11 @@ import Picture from './Picture';
 import { useModalState } from '../contexts/ModalContext';
 import { usePlayingState } from '../contexts/PlayingContext';
 
-let { width } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 const Bottom = ({ tracks }) => {
+  const [widthState, setWidthState] = useState(width);
+
   const { handleShowModal } = useModalState();
   const {
     trackId,
@@ -25,10 +27,16 @@ const Bottom = ({ tracks }) => {
     ratio,
   } = usePlayingState();
 
+  const onLayout = (e) => {
+    if (widthState !== e.nativeEvent.layout.width) {
+      setWidthState(e.nativeEvent.layout.width);
+    }
+  };
+
   const track = tracks[trackId];
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} onLayout={onLayout}>
       <View style={styles.seek}>
         <View style={[styles.playing, { width: `${ratio * 100}%` }]} />
       </View>
@@ -38,10 +46,14 @@ const Bottom = ({ tracks }) => {
           onPress={() => handleShowModal(true)}>
           <Picture paused={paused} img={track.picture} />
           <View style={styles.content}>
-            <Text numberOfLines={1} style={styles.title}>
+            <Text
+              numberOfLines={1}
+              style={[styles.title, { maxWidth: widthState - 200 }]}>
               {track.title}
             </Text>
-            <Text numberOfLines={1} style={styles.singer}>
+            <Text
+              numberOfLines={1}
+              style={[styles.singer, { maxWidth: widthState - 200 }]}>
               {track.singer}
             </Text>
           </View>
@@ -101,12 +113,10 @@ const styles = StyleSheet.create({
   title: {
     color: 'black',
     fontSize: 14,
-    width: width - 200,
   },
   singer: {
     color: '#a0a0a0',
     fontSize: 14,
-    width: width - 200,
   },
   control: {
     width: 120,

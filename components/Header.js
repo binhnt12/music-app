@@ -1,16 +1,33 @@
-import React from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
 
 import { useModalState } from '../contexts/ModalContext';
 
 import arrowDown from '../img/ic_keyboard_arrow_down_white.png';
 import queueMusic from '../img/ic_queue_music_white.png';
 
+let { width } = Dimensions.get('window');
+
 const Header = ({ text, noArrow, backgroundColor }) => {
+  const [widthState, setWidthState] = useState(width);
+
   const { handleShowModal } = useModalState();
 
+  const onLayout = (e) => {
+    if (widthState !== e.nativeEvent.layout.width) {
+      setWidthState(e.nativeEvent.layout.width);
+    }
+  };
+
   return (
-    <View style={[styles.container, { backgroundColor }]}>
+    <View style={[styles.container, { backgroundColor }]} onLayout={onLayout}>
       <View style={styles.textAndArrowDown}>
         {!noArrow && (
           <TouchableOpacity
@@ -19,7 +36,14 @@ const Header = ({ text, noArrow, backgroundColor }) => {
             <Image source={arrowDown} />
           </TouchableOpacity>
         )}
-        <Text style={noArrow ? styles.textNoArrow : styles.text}>{text}</Text>
+        <Text
+          numberOfLines={1}
+          style={[
+            noArrow ? styles.textNoArrow : styles.text,
+            { maxWidth: widthState - 120 },
+          ]}>
+          {text}
+        </Text>
       </View>
       <TouchableOpacity style={noArrow ? styles.queueNoArrow : null}>
         <Image source={queueMusic} />

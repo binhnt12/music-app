@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { createContext, useState, useContext } from 'react';
 
-var CategoryContext = React.createContext();
+const CategoryContext = createContext();
 
 function CategoryProvider({ children }) {
-  var [categoryId, setCategoryId] = React.useState(null);
-  var [selectedCategoryId, setSelectedCategoryId] = React.useState(0);
+  const [categoryId, setCategoryId] = useState(null);
+  const [selectedCategoryId, setSelectedCategoryId] = useState(0);
 
   const handleSelectedCategoryId = (index) => {
     setSelectedCategoryId(index);
@@ -28,7 +28,7 @@ function CategoryProvider({ children }) {
 }
 
 function useCategoryState() {
-  var context = React.useContext(CategoryContext);
+  var context = useContext(CategoryContext);
   if (context === undefined) {
     throw new Error('useCategoryState must be used within a CategoryProvider');
   }

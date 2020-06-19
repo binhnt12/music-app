@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { createContext, useState, useContext } from 'react';
 
-var ModalContext = React.createContext();
+const ModalContext = createContext();
 
 function ModalProvider({ children }) {
-  var [isShowModal, setShowModal] = React.useState(false);
+  const [isShowModal, setShowModal] = useState(false);
 
   const handleShowModal = (value) => {
     setShowModal(value);
@@ -21,7 +21,7 @@ function ModalProvider({ children }) {
 }
 
 function useModalState() {
-  var context = React.useContext(ModalContext);
+  var context = useContext(ModalContext);
   if (context === undefined) {
     throw new Error('useModalState must be used within a ModalProvider');
   }

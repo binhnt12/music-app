@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Text,
   View,
   Image,
+  ScrollView,
   TouchableOpacity,
   StyleSheet,
   Dimensions,
@@ -22,13 +23,11 @@ const Item = ({ navigation, item }) => {
   const handleSwitch = (id) => {
     handleSelectedCategoryId(id);
     handleShowModal(false);
-    navigation.navigate('Playlist');
+    navigation.navigate('Playlist', { category: item.name });
   };
 
   return (
-    <TouchableOpacity
-      onPress={() => handleSwitch(item.id)}
-      style={styles.imgAndText}>
+    <TouchableOpacity onPress={() => handleSwitch(item.id)}>
       <Image source={{ uri: item.picture }} style={styles.img} />
       <Text style={styles.textItem}>{item.name}</Text>
     </TouchableOpacity>
@@ -36,21 +35,24 @@ const Item = ({ navigation, item }) => {
 };
 
 const Home = ({ navigation }) => {
+  const [widthState, setWidthState] = useState(width);
+
+  const onLayout = (e) => {
+    if (widthState !== e.nativeEvent.layout.width) {
+      setWidthState(e.nativeEvent.layout.width);
+    }
+  };
+
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container} onLayout={onLayout}>
       <Image
         source={{
           uri:
             'https://photo-zmp3.zadn.vn/banner/9/d/2/d/9d2dd92b4f457c8813e29779f22f679a.jpg',
         }}
-        style={styles.banner}
+        style={[styles.banner, { maxWidth: widthState - 16 }]}
       />
       <Text style={styles.textCategory}>Chủ đề</Text>
-      {/* <ScrollView horizontal={true}>
-        {CATEGORY.map((o, i) => (
-          <Item key={i + ''} navigation={navigation} item={o} />
-        ))}
-      </ScrollView> */}
       <FlatList
         data={CATEGORY}
         horizontal={true}
@@ -58,7 +60,8 @@ const Home = ({ navigation }) => {
         renderItem={({ item }) => <Item navigation={navigation} item={item} />}
         keyExtractor={(item) => item.id + ''}
       />
-    </View>
+      <View style={styles.space} />
+    </ScrollView>
   );
 };
 
@@ -74,9 +77,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
     marginBottom: 8,
   },
-  imgAndText: {},
   banner: {
-    width: width - 16,
     height: 200,
     borderRadius: 8,
   },
@@ -90,5 +91,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: 4,
     fontWeight: 'bold',
+  },
+  space: {
+    marginBottom: 20,
   },
 });

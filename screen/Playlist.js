@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -7,6 +7,7 @@ import {
   Animated,
   Dimensions,
 } from 'react-native';
+import _ from 'lodash';
 
 import Item from '../components/Item';
 import Header from '../components/Header';
@@ -15,18 +16,31 @@ import Bottom from '../components/Bottom';
 
 import { useModalState } from '../contexts/ModalContext';
 import { useCategoryState } from '../contexts/CategoryContext';
+import { usePlayingState } from '../contexts/PlayingContext';
 import { TRACKS } from '../static/tracks';
 
 const { height } = Dimensions.get('window');
 
-const Playlist = () => {
+const Playlist = ({ route }) => {
   const { isShowModal } = useModalState();
   const { categoryId, selectedCategoryId } = useCategoryState();
+  const { shuffleOn } = usePlayingState();
 
   const [translateY, setTranslateY] = useState(null);
+  // const [playlist, setPlaylist] = useState(null);
+  const [change, setChange] = useState(false);
   const isFirstRun = useRef(true);
+  const flatlistRef = useRef(null);
+  // const playlistRef = useRef(null);
+  const category = (route.params && route.params.category) || 'Bài hát';
 
   let translateValue = new Animated.Value(0);
+  let playlist = TRACKS[selectedCategoryId];
+  let playlistRef = TRACKS[selectedCategoryId];
+
+  useEffect(() => {
+    flatlistRef.current.scrollToOffset({ animated: false, offset: 0 });
+  }, [selectedCategoryId]);
 
   useEffect(() => {
     if (isFirstRun.current) {
@@ -45,19 +59,35 @@ const Playlist = () => {
     outputRange: isShowModal ? [height, 0] : [0, height],
   });
 
+  playlistRef = useMemo(() => {
+    if (shuffleOn) {
+      return _.shuffle(TRACKS[categoryId]);
+    }
+    return;
+  }, [shuffleOn]);
+
+  playlist = useMemo(() => {
+    if (shuffleOn && selectedCategoryId === categoryId) {
+      return playlistRef;
+    }
+    return TRACKS[selectedCategoryId];
+  }, [shuffleOn, selectedCategoryId]);
+
   return (
     <View style={styles.container}>
-      <Header text="Bài hát" noArrow backgroundColor="#000051" />
+      <Header text={category} noArrow backgroundColor="#000051" />
       <ImageBackground
         source={require('../img/background.jpg')}
         style={styles.backgroundOne}>
         <ImageBackground style={styles.backgroundTwo}>
           <FlatList
-            style={styles.flatlist}
-            data={TRACKS[selectedCategoryId]}
+            ref={flatlistRef}
+            data={playlist}
             renderItem={({ item }) => <Item item={item} />}
             keyExtractor={(item) => item.id + ''}
+            contentContainerStyle={styles.flatlist}
           />
+          <View style={styles.space} />
         </ImageBackground>
       </ImageBackground>
       <Animated.View
@@ -65,9 +95,9 @@ const Playlist = () => {
           styles.modal,
           { transform: [{ translateY: translateY || height }] },
         ]}>
-        {categoryId && <Player tracks={TRACKS[categoryId]} />}
+        {categoryId !== null && <Player tracks={TRACKS[categoryId]} />}
       </Animated.View>
-      {categoryId && <Bottom tracks={TRACKS[categoryId]} />}
+      {categoryId !== null && <Bottom tracks={TRACKS[categoryId]} />}
     </View>
   );
 };
@@ -78,7 +108,6 @@ const styles = StyleSheet.create({
   },
   flatlist: {
     paddingTop: 16,
-    paddingBottom: 0,
   },
   backgroundOne: {
     flex: 1,

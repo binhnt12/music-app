@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useState, useContext, createContext } from 'react';
 
-var PlayingContext = React.createContext();
+const PlayingContext = createContext();
 
 function PlayingProvider({ children }) {
-  var [trackId, setTrackId] = React.useState(null);
-  var [ratio, setRatio] = React.useState(0);
-  var [paused, setPaused] = React.useState(true);
-  var [isNext, setNext] = React.useState(false);
-  var [isPrev, setPrev] = React.useState(false);
+  const [trackId, setTrackId] = useState(null);
+  const [ratio, setRatio] = useState(0);
+  const [paused, setPaused] = useState(true);
+  const [isNext, setNext] = useState(false);
+  const [isPrev, setPrev] = useState(false);
+  const [shuffleOn, setShuffleOn] = useState(false);
+  const [repeat, setRepeat] = useState('repeatOff');
 
   const handleTrackId = (value) => {
     setTrackId(value);
@@ -29,6 +31,14 @@ function PlayingProvider({ children }) {
     setPrev(value);
   };
 
+  const handleShuffleOn = (value) => {
+    setShuffleOn(value);
+  };
+
+  const handleRepeat = (value) => {
+    setRepeat(value);
+  };
+
   return (
     <PlayingContext.Provider
       value={{
@@ -42,6 +52,10 @@ function PlayingProvider({ children }) {
         handleNext,
         isPrev,
         handlePrev,
+        shuffleOn,
+        handleShuffleOn,
+        repeat,
+        handleRepeat,
       }}>
       {children}
     </PlayingContext.Provider>
@@ -49,7 +63,7 @@ function PlayingProvider({ children }) {
 }
 
 function usePlayingState() {
-  var context = React.useContext(PlayingContext);
+  var context = useContext(PlayingContext);
   if (context === undefined) {
     throw new Error('usePlayingState must be used within a PlayingProvider');
   }

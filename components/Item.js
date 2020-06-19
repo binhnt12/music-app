@@ -1,16 +1,32 @@
-import React from 'react';
-import { Text, View, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import React, { useState } from 'react';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  Dimensions,
+} from 'react-native';
 
 import { usePlayingState } from '../contexts/PlayingContext.js';
 import { useModalState } from '../contexts/ModalContext.js';
 import { useCategoryState } from '../contexts/CategoryContext.js';
+
+const { width } = Dimensions.get('window');
 
 const Item = ({ item }) => {
   const pad = (number) => {
     return number < 10 ? `0${number}` : `${number}`;
   };
 
-  const { handlePaused, handleTrackId, trackId } = usePlayingState();
+  const [widthState, setWidthState] = useState(width);
+
+  const {
+    handlePaused,
+    handleTrackId,
+    handleShuffleOn,
+    trackId,
+  } = usePlayingState();
   const { handleShowModal } = useModalState();
   const {
     selectedCategoryId,
@@ -22,15 +38,25 @@ const Item = ({ item }) => {
     handleTrackId(trackId);
     handlePaused(false);
     handleCategoryId(selectedCategoryId);
+    if (selectedCategoryId !== categoryId) {
+      handleShuffleOn(false);
+    }
     handleShowModal(true);
   };
 
   const active = trackId === item.id && categoryId === selectedCategoryId;
 
+  const onLayout = (e) => {
+    if (widthState !== e.nativeEvent.layout.width) {
+      setWidthState(e.nativeEvent.layout.width);
+    }
+  };
+
   return (
     <TouchableOpacity
       onPress={() => handleClick(item.id)}
-      style={styles.container}>
+      style={styles.container}
+      onLayout={onLayout}>
       <View>
         <Text
           style={[
@@ -47,11 +73,23 @@ const Item = ({ item }) => {
       <Image source={{ uri: item.picture }} style={styles.img} />
       <View style={styles.content}>
         <Text
-          style={[styles.text, styles.title, active && { color: '#9c4dcc' }]}>
+          numberOfLines={2}
+          style={[
+            styles.text,
+            styles.title,
+            { maxWidth: widthState - 120 },
+            active && { color: '#9c4dcc' },
+          ]}>
           {item.title}
         </Text>
         <Text
-          style={[styles.text, styles.singer, active && { color: '#6a1b9a' }]}>
+          numberOfLines={1}
+          style={[
+            styles.text,
+            styles.singer,
+            { maxWidth: widthState - 120 },
+            active && { color: '#6a1b9a' },
+          ]}>
           {item.singer}
         </Text>
       </View>
@@ -78,9 +116,11 @@ const styles = StyleSheet.create({
   },
   title: {
     fontWeight: 'bold',
+    maxWidth: width - 120,
   },
   singer: {
     color: '#a0a0a0',
+    maxWidth: width - 120,
   },
   img: {
     height: 64,

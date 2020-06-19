@@ -1,10 +1,11 @@
 import React from 'react';
 import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Control = ({
   paused,
   shuffleOn,
-  repeatOn,
+  repeat,
   onPressPlay,
   onPressPause,
   onBack,
@@ -12,48 +13,63 @@ const Control = ({
   onPressShuffle,
   onPressRepeat,
   forwardDisabled,
-}) => (
-  <View style={styles.container}>
-    <TouchableOpacity activeOpacity={0.0} onPress={onPressShuffle}>
-      <Image
-        style={[styles.secondaryControl, shuffleOn ? [] : styles.off]}
-        source={require('../img/ic_shuffle_white.png')}
-      />
-    </TouchableOpacity>
-    <View style={{ width: 40 }} />
-    <TouchableOpacity onPress={onBack}>
-      <Image source={require('../img/ic_skip_previous_white_36pt.png')} />
-    </TouchableOpacity>
-    <View style={{ width: 20 }} />
-    {!paused ? (
-      <TouchableOpacity onPress={onPressPause}>
-        <View style={styles.playButton}>
-          <Image source={require('../img/ic_pause_white_48pt.png')} />
-        </View>
+}) => {
+  let renderRepeat;
+  switch (repeat) {
+    case 'repeatOn':
+      renderRepeat = <Icon name="repeat" size={25} color="white" />;
+      break;
+    case 'repeatOff':
+      renderRepeat = <Icon name="repeat-off" size={25} color="white" />;
+      break;
+    case 'repeatOnce':
+      renderRepeat = <Icon name="repeat-once" size={25} color="white" />;
+      break;
+    default:
+      renderRepeat = <Icon name="repeat-off" size={25} color="white" />;
+  }
+
+  return (
+    <View style={styles.container}>
+      <TouchableOpacity activeOpacity={0.0} onPress={onPressShuffle}>
+        {shuffleOn ? (
+          <Icon name="shuffle" size={25} color="white" />
+        ) : (
+          <Icon name="shuffle-disabled" size={25} color="white" />
+        )}
       </TouchableOpacity>
-    ) : (
-      <TouchableOpacity onPress={onPressPlay}>
-        <View style={styles.playButton}>
-          <Image source={require('../img/ic_play_arrow_white_48pt.png')} />
-        </View>
+      <View style={{ width: 40 }} />
+      <TouchableOpacity onPress={onBack}>
+        <Image source={require('../img/ic_skip_previous_white_36pt.png')} />
       </TouchableOpacity>
-    )}
-    <View style={{ width: 20 }} />
-    <TouchableOpacity onPress={onForward} disabled={forwardDisabled}>
-      <Image
-        style={[forwardDisabled && { opacity: 0.3 }]}
-        source={require('../img/ic_skip_next_white_36pt.png')}
-      />
-    </TouchableOpacity>
-    <View style={{ width: 40 }} />
-    <TouchableOpacity activeOpacity={0.0} onPress={onPressRepeat}>
-      <Image
-        style={[styles.secondaryControl, repeatOn ? [] : styles.off]}
-        source={require('../img/ic_repeat_white.png')}
-      />
-    </TouchableOpacity>
-  </View>
-);
+      <View style={{ width: 20 }} />
+      {!paused ? (
+        <TouchableOpacity onPress={onPressPause}>
+          <View style={styles.playButton}>
+            <Image source={require('../img/ic_pause_white_48pt.png')} />
+          </View>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity onPress={onPressPlay}>
+          <View style={styles.playButton}>
+            <Image source={require('../img/ic_play_arrow_white_48pt.png')} />
+          </View>
+        </TouchableOpacity>
+      )}
+      <View style={{ width: 20 }} />
+      <TouchableOpacity onPress={onForward} disabled={forwardDisabled}>
+        <Image
+          style={[forwardDisabled && { opacity: 0.3 }]}
+          source={require('../img/ic_skip_next_white_36pt.png')}
+        />
+      </TouchableOpacity>
+      <View style={{ width: 40 }} />
+      <TouchableOpacity activeOpacity={0.0} onPress={onPressRepeat}>
+        {renderRepeat}
+      </TouchableOpacity>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
