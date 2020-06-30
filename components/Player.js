@@ -13,7 +13,7 @@ import { usePlayingState } from '../contexts/PlayingContext';
 
 const { width, height } = Dimensions.get('window');
 
-const Player = ({ tracks, playing, shuffleTracks }) => {
+const Player = ({ tracks, playing }) => {
   const {
     trackId,
     handleTrackId,
@@ -30,6 +30,8 @@ const Player = ({ tracks, playing, shuffleTracks }) => {
     handleShuffleOn,
     repeat,
     handleRepeat,
+    change,
+    handleChange,
   } = usePlayingState();
 
   const [state, setState] = useState({
@@ -42,23 +44,22 @@ const Player = ({ tracks, playing, shuffleTracks }) => {
   });
 
   const isFirstRun = useRef(true);
-  // console.log({ trackIdPlaying, trackId });
 
   useEffect(() => {
-    if (playing) {
+    if (playing && change) {
       handleTrackIdPlaying(_.findIndex(playing, (o) => o.id === trackId));
     }
-  }, [trackId]);
+    if (trackIdPlaying === null) {
+      handleTrackIdPlaying(trackId);
+    }
+    handleChange(true);
+  }, [trackId, playing]);
 
   useEffect(() => {
     if (trackIdPlaying !== null) {
       handleTrackId(playing[trackIdPlaying].id);
     }
   }, [trackIdPlaying]);
-
-  // useEffect(() => {
-
-  // }, [shuffleOn]);
 
   useEffect(() => {
     if (isNext) {
@@ -205,7 +206,7 @@ const Player = ({ tracks, playing, shuffleTracks }) => {
               onProgress={setTime} // Callback every ~250ms with currentTime
               key={state.reRender}
               style={styles.audioElement}
-              // playInBackground={true}
+              playInBackground={true}
             />
           </View>
         </View>

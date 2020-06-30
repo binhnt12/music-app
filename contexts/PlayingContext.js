@@ -11,6 +11,7 @@ function PlayingProvider({ children }) {
   const [isPrev, setPrev] = useState(false);
   const [shuffleOn, setShuffleOn] = useState(false);
   const [repeat, setRepeat] = useState('repeatOff');
+  const [change, setChange] = useState(true);
 
   const handleTrackIdPlaying = (value) => {
     setTrackIdPlaying(value);
@@ -44,6 +45,10 @@ function PlayingProvider({ children }) {
     setRepeat(value);
   };
 
+  const handleChange = (value) => {
+    setChange(value);
+  };
+
   return (
     <PlayingContext.Provider
       value={{
@@ -63,6 +68,8 @@ function PlayingProvider({ children }) {
         handleShuffleOn,
         repeat,
         handleRepeat,
+        change,
+        handleChange,
       }}>
       {children}
     </PlayingContext.Provider>
