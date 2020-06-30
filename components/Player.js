@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { StyleSheet, View, Dimensions } from 'react-native';
 import Video from 'react-native-video';
 import LinearGradient from 'react-native-linear-gradient';
+import _ from 'lodash';
 
 import Header from '../components/Header';
 import Picture from './Picture';
@@ -12,10 +13,12 @@ import { usePlayingState } from '../contexts/PlayingContext';
 
 const { width, height } = Dimensions.get('window');
 
-const Player = ({ tracks }) => {
+const Player = ({ tracks, playing, shuffleTracks }) => {
   const {
     trackId,
     handleTrackId,
+    trackIdPlaying,
+    handleTrackIdPlaying,
     paused,
     handlePaused,
     isNext,
@@ -39,6 +42,23 @@ const Player = ({ tracks }) => {
   });
 
   const isFirstRun = useRef(true);
+  // console.log({ trackIdPlaying, trackId });
+
+  useEffect(() => {
+    if (playing) {
+      handleTrackIdPlaying(_.findIndex(playing, (o) => o.id === trackId));
+    }
+  }, [trackId]);
+
+  useEffect(() => {
+    if (trackIdPlaying !== null) {
+      handleTrackId(playing[trackIdPlaying].id);
+    }
+  }, [trackIdPlaying]);
+
+  // useEffect(() => {
+
+  // }, [shuffleOn]);
 
   useEffect(() => {
     if (isNext) {
@@ -66,12 +86,12 @@ const Player = ({ tracks }) => {
   }, [state.currentPosition]);
 
   useEffect(() => {
-    if (trackId === tracks.length - 1) {
+    if (trackIdPlaying === playing.length - 1) {
       setState((state) => ({ ...state, isForwardDisabled: true }));
       return;
     }
     setState((state) => ({ ...state, isForwardDisabled: false }));
-  }, [trackId]);
+  }, [trackIdPlaying]);
 
   const setDuration = (data) => {
     setState((state) => ({
@@ -97,16 +117,16 @@ const Player = ({ tracks }) => {
   };
 
   const handleOnForward = () => {
-    if (trackId < tracks.length - 1) {
-      handleTrackId(trackId + 1);
+    if (trackIdPlaying < playing.length - 1) {
+      handleTrackIdPlaying(trackIdPlaying + 1);
     }
   };
 
   const handleOnBack = () => {
-    if (trackId > 0) {
-      handleTrackId(trackId - 1);
+    if (trackIdPlaying > 0) {
+      handleTrackIdPlaying(trackIdPlaying - 1);
     }
-    if (trackId === 0) {
+    if (trackIdPlaying === 0) {
       setState((state) => ({
         ...state,
         reRender: state.reRender === '1' ? '0' : '1',

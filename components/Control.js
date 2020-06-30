@@ -17,25 +17,25 @@ const Control = ({
   let renderRepeat;
   switch (repeat) {
     case 'repeatOn':
-      renderRepeat = <Icon name="repeat" size={25} color="white" />;
+      renderRepeat = <Icon name="repeat" size={25} color="#9c4dcc" />;
       break;
     case 'repeatOff':
-      renderRepeat = <Icon name="repeat-off" size={25} color="white" />;
+      renderRepeat = <Icon name="repeat" size={25} color="white" />;
       break;
     case 'repeatOnce':
-      renderRepeat = <Icon name="repeat-once" size={25} color="white" />;
+      renderRepeat = <Icon name="repeat-once" size={25} color="#9c4dcc" />;
       break;
     default:
-      renderRepeat = <Icon name="repeat-off" size={25} color="white" />;
+      renderRepeat = <Icon name="repeat" size={25} color="white" />;
   }
 
   return (
     <View style={styles.container}>
       <TouchableOpacity activeOpacity={0.0} onPress={onPressShuffle}>
         {shuffleOn ? (
-          <Icon name="shuffle" size={25} color="white" />
+          <Icon name="shuffle" size={25} color="#9c4dcc" />
         ) : (
-          <Icon name="shuffle-disabled" size={25} color="white" />
+          <Icon name="shuffle" size={25} color="white" />
         )}
       </TouchableOpacity>
       <View style={{ width: 40 }} />

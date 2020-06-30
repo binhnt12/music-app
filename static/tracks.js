@@ -43,7 +43,7 @@ const TRACKS = [
     },
     {
       id: 2,
-      title: 'Không sao đâu, em đây rồi',
+      title: 'Không sao mà, em đây rồi',
       singer: 'Sunny Hạ Linh',
       picture:
         'https://photo-resize-zmp3.zadn.vn/w240_r1x1_jpeg/cover/4/8/f/f/48ffdb72c21e5865fa0f2f1f269f0e16.jpg',

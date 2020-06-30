@@ -34,8 +34,8 @@ const Item = ({ item }) => {
     handleCategoryId,
   } = useCategoryState();
 
-  const handleClick = (trackId) => {
-    handleTrackId(trackId);
+  const handleClick = (index) => {
+    handleTrackId(index);
     handlePaused(false);
     handleCategoryId(selectedCategoryId);
     if (selectedCategoryId !== categoryId) {

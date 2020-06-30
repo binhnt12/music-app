@@ -4,12 +4,17 @@ const PlayingContext = createContext();
 
 function PlayingProvider({ children }) {
   const [trackId, setTrackId] = useState(null);
+  const [trackIdPlaying, setTrackIdPlaying] = useState(trackId);
   const [ratio, setRatio] = useState(0);
   const [paused, setPaused] = useState(true);
   const [isNext, setNext] = useState(false);
   const [isPrev, setPrev] = useState(false);
   const [shuffleOn, setShuffleOn] = useState(false);
   const [repeat, setRepeat] = useState('repeatOff');
+
+  const handleTrackIdPlaying = (value) => {
+    setTrackIdPlaying(value);
+  };
 
   const handleTrackId = (value) => {
     setTrackId(value);
@@ -44,6 +49,8 @@ function PlayingProvider({ children }) {
       value={{
         trackId,
         handleTrackId,
+        trackIdPlaying,
+        handleTrackIdPlaying,
         ratio,
         handleRatio,
         paused,

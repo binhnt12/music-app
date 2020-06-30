@@ -27,16 +27,18 @@ const Playlist = ({ route }) => {
   const { shuffleOn } = usePlayingState();
 
   const [translateY, setTranslateY] = useState(null);
-  // const [playlist, setPlaylist] = useState(null);
-  const [change, setChange] = useState(false);
+  // const [shuffleTracks, setShuffleTracks] = useState(null);
+  // const [selectedTracks, setSelectedTracks] = useState(null);
+  const [playing, setPlaying] = useState(TRACKS[selectedCategoryId]);
   const isFirstRun = useRef(true);
+  const isFirstRunTwo = useRef(true);
   const flatlistRef = useRef(null);
-  // const playlistRef = useRef(null);
   const category = (route.params && route.params.category) || 'Bài hát';
 
   let translateValue = new Animated.Value(0);
   let playlist = TRACKS[selectedCategoryId];
   let playlistRef = TRACKS[selectedCategoryId];
+  // let playing = TRACKS[selectedCategoryId];
 
   useEffect(() => {
     flatlistRef.current.scrollToOffset({ animated: false, offset: 0 });
@@ -54,6 +56,18 @@ const Playlist = ({ route }) => {
     }).start();
   }, [isShowModal]);
 
+  // useEffect(() => {
+  //   if (shuffleOn) {
+  //     setShuffleTracks(_.shuffle(TRACKS[categoryId]));
+  //   } else setShuffleTracks(TRACKS[categoryId]);
+  // }, [shuffleOn]);
+
+  // useEffect(() => {
+  //   if (shuffleOn && selectedCategoryId === categoryId) {
+  //     setSelectedTracks(shuffleTracks);
+  //   } else setSelectedTracks(TRACKS[selectedCategoryId]);
+  // }, [shuffleOn, selectedCategoryId]);
+
   const translateModal = translateValue.interpolate({
     inputRange: [0, 1],
     outputRange: isShowModal ? [height, 0] : [0, height],
@@ -65,6 +79,30 @@ const Playlist = ({ route }) => {
     }
     return;
   }, [shuffleOn]);
+
+  useEffect(() => {
+    if (isFirstRunTwo.current) {
+      isFirstRunTwo.current = false;
+      setPlaying(TRACKS[selectedCategoryId]);
+      return;
+    }
+    if (shuffleOn) {
+      setPlaying(playlistRef);
+      return;
+    }
+    setPlaying(TRACKS[categoryId]);
+  }, [shuffleOn]);
+
+  // playing = useMemo(() => {
+  //   if (isFirstRunTwo.current) {
+  //     isFirstRunTwo.current = false;
+  //     return TRACKS[selectedCategoryId];
+  //   }
+  //   if (shuffleOn) {
+  //     return playlistRef;
+  //   }
+  //   return TRACKS[categoryId];
+  // }, [shuffleOn]);
 
   playlist = useMemo(() => {
     if (shuffleOn && selectedCategoryId === categoryId) {
@@ -95,9 +133,13 @@ const Playlist = ({ route }) => {
           styles.modal,
           { transform: [{ translateY: translateY || height }] },
         ]}>
-        {categoryId !== null && <Player tracks={TRACKS[categoryId]} />}
+        {categoryId !== null && (
+          <Player tracks={TRACKS[categoryId]} playing={playing} />
+        )}
       </Animated.View>
-      {categoryId !== null && <Bottom tracks={TRACKS[categoryId]} />}
+      {categoryId !== null && (
+        <Bottom tracks={TRACKS[categoryId]} playing={playing} />
+      )}
     </View>
   );
 };
