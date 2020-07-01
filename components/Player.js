@@ -45,7 +45,7 @@ const Player = ({ tracks, playing }) => {
 
   const isFirstRun = useRef(true);
 
-  console.log({ trackId, trackIdPlaying });
+  // console.log({ trackId, trackIdPlaying });
 
   useEffect(() => {
     if (playing && change) {
@@ -127,13 +127,11 @@ const Player = ({ tracks, playing }) => {
   };
 
   const handleOnForward = () => {
-    if (trackIdPlaying < playing.length) {
-      console.log(repeat);
-      if (repeat !== 'repeatOff') {
-        handleTrackIdPlaying(0);
-      } else {
-        handleTrackIdPlaying(trackIdPlaying + 1);
-      }
+    if (trackIdPlaying < playing.length - 1) {
+      handleTrackIdPlaying(trackIdPlaying + 1);
+    }
+    if (trackIdPlaying === playing.length - 1 && repeat !== 'repeatOff') {
+      handleTrackIdPlaying(0);
     }
   };
 
