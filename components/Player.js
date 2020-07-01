@@ -45,11 +45,13 @@ const Player = ({ tracks, playing }) => {
 
   const isFirstRun = useRef(true);
 
+  console.log({ trackId, trackIdPlaying });
+
   useEffect(() => {
     if (playing && change) {
       handleTrackIdPlaying(_.findIndex(playing, (o) => o.id === trackId));
     }
-    if (trackIdPlaying === null) {
+    if (trackIdPlaying === null || !shuffleOn) {
       handleTrackIdPlaying(trackId);
     }
     handleChange(true);

@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
   seek: {
     height: 3,
     width: '100%',
-    backgroundColor: 'gray',
+    backgroundColor: 'rgba(0,0,0,0.2)',
   },
   playing: {
     height: 3,
