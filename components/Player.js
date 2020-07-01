@@ -83,18 +83,25 @@ const Player = ({ tracks, playing }) => {
       return;
     }
     if (state.currentPosition >= state.totalLength - 1) {
-      handleOnForward();
+      if (repeat === 'repeatOnce') {
+        setState((state) => ({
+          ...state,
+          reRender: state.reRender === '1' ? '0' : '1',
+        }));
+      } else {
+        handleOnForward();
+      }
     }
     handleRatio(state.currentPosition / state.totalLength);
   }, [state.currentPosition]);
 
   useEffect(() => {
-    if (trackIdPlaying === playing.length - 1) {
+    if (trackIdPlaying === playing.length - 1 && repeat === 'repeatOff') {
       setState((state) => ({ ...state, isForwardDisabled: true }));
       return;
     }
     setState((state) => ({ ...state, isForwardDisabled: false }));
-  }, [trackIdPlaying]);
+  }, [trackIdPlaying, repeat]);
 
   const setDuration = (data) => {
     setState((state) => ({
@@ -120,8 +127,13 @@ const Player = ({ tracks, playing }) => {
   };
 
   const handleOnForward = () => {
-    if (trackIdPlaying < playing.length - 1) {
-      handleTrackIdPlaying(trackIdPlaying + 1);
+    if (trackIdPlaying < playing.length) {
+      console.log(repeat);
+      if (repeat !== 'repeatOff') {
+        handleTrackIdPlaying(0);
+      } else {
+        handleTrackIdPlaying(trackIdPlaying + 1);
+      }
     }
   };
 
@@ -130,10 +142,14 @@ const Player = ({ tracks, playing }) => {
       handleTrackIdPlaying(trackIdPlaying - 1);
     }
     if (trackIdPlaying === 0) {
-      setState((state) => ({
-        ...state,
-        reRender: state.reRender === '1' ? '0' : '1',
-      }));
+      if (repeat !== 'repeatOff') {
+        handleTrackIdPlaying(playing.length - 1);
+      } else {
+        setState((state) => ({
+          ...state,
+          reRender: state.reRender === '1' ? '0' : '1',
+        }));
+      }
     }
   };
 
