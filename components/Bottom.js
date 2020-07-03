@@ -25,6 +25,7 @@ const Bottom = ({ tracks }) => {
     handleNext,
     handlePrev,
     ratio,
+    isForwardDisabled,
   } = usePlayingState();
 
   const onLayout = (e) => {
@@ -71,8 +72,14 @@ const Bottom = ({ tracks }) => {
               <Icon name="pause" size={35} />
             </TouchableOpacity>
           )}
-          <TouchableOpacity onPress={() => handleNext(true)}>
-            <Icon name="skip-next" size={35} />
+          <TouchableOpacity
+            onPress={() => handleNext(true)}
+            disabled={isForwardDisabled}>
+            <Icon
+              name="skip-next"
+              size={35}
+              style={isForwardDisabled && { opacity: 0.3 }}
+            />
           </TouchableOpacity>
         </View>
       </View>

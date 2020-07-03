@@ -32,6 +32,8 @@ const Player = ({ tracks, playing }) => {
     handleRepeat,
     change,
     handleChange,
+    isForwardDisabled,
+    handleForwardDisabled,
   } = usePlayingState();
 
   const [state, setState] = useState({
@@ -39,7 +41,6 @@ const Player = ({ tracks, playing }) => {
     currentPosition: 0,
     dragTime: null,
     reRender: '1',
-    isForwardDisabled: false,
     isPortrait: width < height,
   });
 
@@ -97,10 +98,10 @@ const Player = ({ tracks, playing }) => {
 
   useEffect(() => {
     if (trackIdPlaying === playing.length - 1 && repeat === 'repeatOff') {
-      setState((state) => ({ ...state, isForwardDisabled: true }));
+      handleForwardDisabled(true);
       return;
     }
-    setState((state) => ({ ...state, isForwardDisabled: false }));
+    handleForwardDisabled(false);
   }, [trackIdPlaying, repeat]);
 
   const setDuration = (data) => {
@@ -209,7 +210,7 @@ const Player = ({ tracks, playing }) => {
               shuffleOn={shuffleOn}
               onPressRepeat={onPressRepeat}
               repeat={repeat}
-              forwardDisabled={state.isForwardDisabled}
+              forwardDisabled={isForwardDisabled}
             />
             <Video
               rate={1.0}

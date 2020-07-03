@@ -59,7 +59,7 @@ const Control = ({
       <View style={{ width: 20 }} />
       <TouchableOpacity onPress={onForward} disabled={forwardDisabled}>
         <Image
-          style={[forwardDisabled && { opacity: 0.3 }]}
+          style={forwardDisabled && { opacity: 0.3 }}
           source={require('../img/ic_skip_next_white_36pt.png')}
         />
       </TouchableOpacity>
