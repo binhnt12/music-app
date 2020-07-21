@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   StyleSheet,
   View,
@@ -34,7 +34,7 @@ const Bottom = ({ tracks }) => {
     }
   };
 
-  const track = tracks[trackId];
+  const track = useMemo(() => tracks[trackId], [trackId]);
 
   return (
     <View style={styles.container} onLayout={onLayout}>

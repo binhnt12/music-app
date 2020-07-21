@@ -172,7 +172,7 @@ const Player = ({ tracks, playing }) => {
     }
   };
 
-  const track = tracks[trackId];
+  const track = useMemo(() => tracks[trackId], [trackId]);
 
   const onLayout = (e) => {
     let isPortrait = e.nativeEvent.layout.height > e.nativeEvent.layout.width;
@@ -216,6 +216,7 @@ const Player = ({ tracks, playing }) => {
               rate={1.0}
               volume={1.0}
               source={{ uri: track.audioUrl }} // Can be a URL or a local file.
+              // controls={true}
               paused={paused}
               audioOnly={true}
               seek={state.dragTime || null}

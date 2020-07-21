@@ -18,11 +18,12 @@ const { width } = Dimensions.get('window');
 
 const Item = ({ navigation, item }) => {
   const { handleSelectedCategoryId } = useCategoryState();
-  const { handleShowModal } = useModalState();
+  const { handleShowModal, handleShowPlaylist } = useModalState();
 
   const handleSwitch = (id) => {
     handleSelectedCategoryId(id);
     handleShowModal(false);
+    handleShowPlaylist(false);
     navigation.navigate('Playlist', { category: item.name });
   };
 

@@ -14,7 +14,7 @@ import { useCategoryState } from '../contexts/CategoryContext.js';
 
 const { width } = Dimensions.get('window');
 
-const Item = ({ item }) => {
+const Item = ({ item, index }) => {
   const pad = (number) => {
     return number < 10 ? `0${number}` : `${number}`;
   };
@@ -67,7 +67,7 @@ const Item = ({ item }) => {
               fontWeight: 'bold',
             },
           ]}>
-          {pad(item.id + 1)}
+          {pad(index + 1)}
         </Text>
       </View>
       <Image source={{ uri: item.picture }} style={styles.img} />

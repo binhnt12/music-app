@@ -4,9 +4,14 @@ const ModalContext = createContext();
 
 function ModalProvider({ children }) {
   const [isShowModal, setShowModal] = useState(false);
+  const [showPlaylist, setShowPlaylist] = useState(null);
 
   const handleShowModal = (value) => {
     setShowModal(value);
+  };
+
+  const handleShowPlaylist = (value) => {
+    setShowPlaylist(value);
   };
 
   return (
@@ -14,6 +19,8 @@ function ModalProvider({ children }) {
       value={{
         isShowModal,
         handleShowModal,
+        showPlaylist,
+        handleShowPlaylist,
       }}>
       {children}
     </ModalContext.Provider>

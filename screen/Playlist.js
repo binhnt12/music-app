@@ -22,20 +22,26 @@ import { TRACKS } from '../static/tracks';
 const { height } = Dimensions.get('window');
 
 const Playlist = ({ route }) => {
-  const { isShowModal } = useModalState();
-  const { categoryId, selectedCategoryId } = useCategoryState();
+  const { isShowModal, showPlaylist } = useModalState();
+  const {
+    categoryId,
+    selectedCategoryId,
+    handleSelectedCategoryId,
+  } = useCategoryState();
   const { shuffleOn, handleChange } = usePlayingState();
 
   const [translateY, setTranslateY] = useState(null);
   const [playing, setPlaying] = useState(TRACKS[selectedCategoryId]);
   const isFirstRun = useRef(true);
   const isFirstRunTwo = useRef(true);
+  const showPlaylistRef = useRef(showPlaylist);
   const flatlistRef = useRef(null);
   const category = (route.params && route.params.category) || 'Bài hát';
 
   let translateValue = new Animated.Value(0);
   let playlist = TRACKS[selectedCategoryId];
   let playlistRef = TRACKS[selectedCategoryId];
+  let playlistRefTwo = TRACKS[categoryId];
 
   useEffect(() => {
     flatlistRef.current.scrollToOffset({ animated: false, offset: 0 });
@@ -59,11 +65,7 @@ const Playlist = ({ route }) => {
       setPlaying(TRACKS[selectedCategoryId]);
       return;
     }
-    if (shuffleOn) {
-      setPlaying(playlistRef);
-      return;
-    }
-    setPlaying(TRACKS[categoryId]);
+    setPlaying(playlistRef);
   }, [shuffleOn]);
 
   useEffect(() => {
@@ -74,24 +76,38 @@ const Playlist = ({ route }) => {
     handleChange(false);
   }, [selectedCategoryId]);
 
+  useEffect(() => {
+    if (showPlaylist) {
+      handleSelectedCategoryId(categoryId);
+    }
+  }, [showPlaylist]);
+
   const translateModal = translateValue.interpolate({
     inputRange: [0, 1],
     outputRange: isShowModal ? [height, 0] : [0, height],
   });
 
   playlistRef = useMemo(() => {
-    if (shuffleOn) {
-      return _.shuffle(TRACKS[categoryId]);
+    if (showPlaylistRef.current !== showPlaylist) {
+      showPlaylistRef.current = showPlaylist;
+      if (shuffleOn) {
+        return playlistRefTwo.current;
+      }
+      return TRACKS[categoryId];
     }
-    return;
-  }, [shuffleOn]);
+    if (shuffleOn) {
+      playlistRefTwo.current = _.shuffle(TRACKS[categoryId]);
+      return playlistRefTwo.current;
+    }
+    return TRACKS[categoryId];
+  }, [shuffleOn, showPlaylist]);
 
   playlist = useMemo(() => {
-    if (shuffleOn && selectedCategoryId === categoryId) {
+    if ((shuffleOn && selectedCategoryId === categoryId) || showPlaylist) {
       return playlistRef;
     }
     return TRACKS[selectedCategoryId];
-  }, [shuffleOn, selectedCategoryId]);
+  }, [shuffleOn, selectedCategoryId, showPlaylist]);
 
   return (
     <View style={styles.container}>
@@ -103,7 +119,7 @@ const Playlist = ({ route }) => {
           <FlatList
             ref={flatlistRef}
             data={playlist}
-            renderItem={({ item }) => <Item item={item} />}
+            renderItem={({ item, index }) => <Item item={item} index={index} />}
             keyExtractor={(item) => item.id + ''}
             contentContainerStyle={styles.flatlist}
           />

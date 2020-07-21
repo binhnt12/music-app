@@ -18,7 +18,7 @@ let { width } = Dimensions.get('window');
 const Header = ({ text, noArrow, backgroundColor }) => {
   const [widthState, setWidthState] = useState(width);
 
-  const { handleShowModal } = useModalState();
+  const { handleShowModal, handleShowPlaylist } = useModalState();
 
   const onLayout = (e) => {
     if (widthState !== e.nativeEvent.layout.width) {
@@ -26,13 +26,21 @@ const Header = ({ text, noArrow, backgroundColor }) => {
     }
   };
 
+  const handleArrow = () => {
+    handleShowPlaylist(false);
+    handleShowModal(false);
+  };
+
+  const handleQueueMusic = () => {
+    handleShowPlaylist(true);
+    handleShowModal(false);
+  };
+
   return (
     <View style={[styles.container, { backgroundColor }]} onLayout={onLayout}>
       <View style={styles.textAndArrowDown}>
         {!noArrow && (
-          <TouchableOpacity
-            style={styles.img}
-            onPress={() => handleShowModal(false)}>
+          <TouchableOpacity style={styles.img} onPress={handleArrow}>
             <Image source={arrowDown} />
           </TouchableOpacity>
         )}
@@ -45,7 +53,9 @@ const Header = ({ text, noArrow, backgroundColor }) => {
           {text}
         </Text>
       </View>
-      <TouchableOpacity style={noArrow ? styles.queueNoArrow : null}>
+      <TouchableOpacity
+        style={noArrow ? styles.queueNoArrow : styles.queueArrow}
+        onPress={handleQueueMusic}>
         <Image source={queueMusic} />
       </TouchableOpacity>
     </View>
@@ -58,12 +68,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     height: 64,
-    paddingRight: 16,
   },
   textAndArrowDown: {
     flexDirection: 'row',
   },
   img: {
+    padding: 16,
+  },
+  queueArrow: {
     padding: 16,
   },
   imgNoArrow: {

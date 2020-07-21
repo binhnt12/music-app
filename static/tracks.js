@@ -97,12 +97,12 @@ const TRACKS = [
     },
     {
       id: 8,
-      title: 'Em không sai chúng ta sai',
+      title: 'Sau tất cả',
       singer: 'Erik',
       picture:
-        'https://photo-resize-zmp3.zadn.vn/w240_r1x1_jpeg/cover/7/4/0/d/740d5e0fd272d2421d441e9fd5c08fdd.jpg',
+        'https://photo-resize-zmp3.zadn.vn/w240_r1x1_jpeg/covers/5/5/55a2e33a5d4d6a70f5144181c28eacb0_1452855672.jpg',
       audioUrl:
-        'file:///storage/0403-0201/Music/BabyBaby - MONSTAR [MP3 320kbps].mp3',
+        'https://feeds.soundcloud.com/stream/840018982-user510635516-sau-t-t-c.mp3',
     },
   ],
 
